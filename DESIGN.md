@@ -342,3 +342,35 @@ Do not start production implementation until:
 - implementation roadmap is approved
 
 This document represents the planning phase and is the blueprint for the actual product build.
+
+## 18. Investigation Workspace Prototype
+The current workspace is a local prototype, not the production AI flow. It uses keyword rules to identify candidate sentences, keeps their exact wording, and assigns stable evidence IDs within the current analysis. A status describes the text match or need for review; it does not certify the announcement.
+
+### Applied design decisions
+- Reading this as: an announcement investigation workspace for students and community members, in a precise editorial style, dial ENERGY 1 / RHYTHM 2 / MOTION 1.
+- The source and findings sit side by side on wide screens so users can compare evidence without losing the source; they stack on narrower screens to preserve readable text widths.
+- Navy and slate establish an editorial reading surface, while emerald is reserved for source links and supported text matches. Amber signals review or demo status, not confidence.
+- Geist is retained from the existing Next.js foundation as a readable sans-serif for dense document text and compact labels.
+- The prototype ships in light mode only because source comparison is the primary task and a paper-like surface keeps long excerpts readable; there is no nonfunctional theme toggle.
+- Amber and rose are reserved for review/demo and validation states, so they add meaning without expanding the core palette.
+- Evidence passages receive the strongest accent because traceability is the product's differentiating interaction. Repeated E## citations connect inline source highlights to the evidence ledger.
+- Separate sections group dates, requirements, actions, and unknowns by the decisions users need to make. Panels use restrained borders and varied section compositions rather than uniform dashboard cards.
+- Panel, control, and status radii vary by hierarchy. The evidence dialog alone uses a shadow to distinguish its elevated layer from the dimmed workspace.
+- File, calendar, checklist, citation, warning, and navigation icons clarify labeled actions; icons never replace their text labels.
+- Motion is limited to brief interaction feedback and source navigation. Reduced-motion preferences disable smooth scrolling and minimize transitions.
+
+### Prototype limits
+
+- Analysis runs locally using fixed keyword rules. No Gemini request, confidence score, accuracy claim, or external verification is present.
+- Evidence references cite the pasted text only. The interface does not record an audit-event history or persist notices.
+- The example announcement is fictional and labeled as demo content. User-provided text is not retained after the page session.
+- Saving, exporting, reminders, file upload, and notice history are not implemented and are not represented as working controls.
+
+### Implemented prototype routes
+
+- The workspace accepts and analyzes pasted text, while the source document, analysis brief, and evidence ledger are separate views over the same in-memory announcement state.
+- The source, analysis, and ledger routes use the same light reading surface and navy navigation shell. Keeping them visually related helps users move between a finding and its original passage without implying separate products.
+- The evidence ledger filters the current prototype's source matches and unknowns. “Text match” means a passage was found in the input; it is not a factual verification status.
+- The onboarding routes explain the local prototype's limits and offer a clearly labeled fictional sample. The darker shell distinguishes introductory material from the paper-like source-reading workspace.
+- There is no real audit-event history. The evidence dialog presents current evidence only, and the interface does not claim that a manual review or cryptographic check occurred.
+- State is shared only while the current page session remains open. Refreshing or closing the page clears the source and analysis.
