@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"background":"#f7f9fb","on-primary-fixed-variant":"#3f465c","surface-dim":"#d8dadc","tertiary-fixed":"#85f8c4","tertiary-container":"#002114","surface-tint":"#565e74","error-container":"#ffdad6","surface-variant":"#e0e3e5","inverse-primary":"#bec6e0","on-primary":"#ffffff","on-secondary-fixed-variant":"#003ea8","tertiary":"#000000","surface-container":"#eceef0","primary-container":"#131b2e","error":"#ba1a1a","on-secondary-container":"#fefcff","on-primary-fixed":"#131b2e","on-background":"#191c1e","secondary-fixed":"#dbe1ff","surface-bright":"#f7f9fb","outline":"#76777d","on-surface-variant":"#45464d","on-error":"#ffffff","on-secondary-fixed":"#00174b","on-primary-container":"#7c839b","inverse-on-surface":"#eff1f3","on-error-container":"#93000a","on-tertiary":"#ffffff","primary-fixed-dim":"#bec6e0","on-tertiary-container":"#069669","inverse-surface":"#2d3133","secondary-container":"#316bf3","on-secondary":"#ffffff","surface-container-high":"#e6e8ea","surface-container-low":"#f2f4f6","primary-fixed":"#dae2fd","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#68dba9","primary":"#000000","surface-container-highest":"#e0e3e5","on-tertiary-fixed-variant":"#005137","on-tertiary-fixed":"#002114","secondary-fixed-dim":"#b4c5ff","secondary":"#0051d5","outline-variant":"#c6c6cd","on-surface":"#191c1e","surface":"#f7f9fb"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-md":"0.75rem","space-xl":"1.5rem","gutter-lg":"1rem","margin":"1rem","gutter":"0.75rem","space-xs":"0.25rem","space-sm":"0.375rem","space-lg":"1rem","margin-lg":"1.5rem"},"fontFamily":{"label-md":["Inter"],"headline-xl":["Inter"],"body-lg":["Inter"],"code-sm":["monospace"],"headline-sm":["Inter"],"headline-md":["Inter"],"headline-lg":["Inter"],"label-sm":["Inter"],"body-sm":["Inter"],"body-md":["Inter"]},"fontSize":{"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"headline-xl":["30px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"code-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-sm":["15px",{"lineHeight":"20px","letterSpacing":"-0.005em","fontWeight":"600"}],"headline-md":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg":["22px",{"lineHeight":"28px","letterSpacing":"-0.015em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-72 bg-primary-container text-on-secondary-container z-50 flex flex-col justify-between select-none"><div class="flex flex-col"><div class="h-14 px-gutter-lg flex items-center gap-space-sm bg-primary-container"><div class="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center text-on-secondary font-headline-md text-headline-md font-bold">C</div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-secondary-container leading-none">ClearNotice<span class="text-secondary-fixed ml-space-xs font-label-sm text-label-sm font-semibold uppercase">AI</span></span><span class="font-label-sm text-label-sm text-on-primary-container leading-none mt-space-xs">Enterprise Intelligence</span></div></div><div class="px-gutter-lg py-space-sm"><div class="px-space-sm py-space-xs font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container">Workspace Core</div></div><nav class="flex flex-col gap-space-xs px-gutter" data-active-classes="bg-secondary text-on-secondary font-bold rounded"><a class="flex items-center px-space-md py-space-sm rounded text-on-primary-container hover:bg-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" data-path="workspace" href="#">Workspace</a><a class="flex items-center px-space-md py-space-sm rounded text-on-primary-container hover:bg-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" data-path="analysis-brief" href="#">Analysis Brief</a><a class="flex items-center px-space-md py-space-sm rounded text-on-primary-container hover:bg-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" data-path="source-document" href="#">Source Document</a><a aria-current="page" class="flex items-center px-space-md py-space-sm transition-colors bg-secondary text-on-secondary font-bold rounded" data-path="evidence-ledger" href="#">Evidence Ledger</a><a class="flex items-center px-space-md py-space-sm rounded text-on-primary-container hover:bg-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" data-path="saved-notices" href="#">Saved Notices</a><a class="flex items-center px-space-md py-space-sm rounded text-on-primary-container hover:bg-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" data-path="history" href="#">History</a><a class="flex items-center px-space-md py-space-sm rounded text-on-primary-container hover:bg-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#">Settings</a></nav></div><div class="p-gutter-lg bg-primary-container/80"><div class="flex items-center gap-space-md"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-md text-label-md text-on-secondary-container truncate">Dr. Jennifer Vance</span><span class="font-label-sm text-label-sm text-on-primary-container truncate">Lead Verification Counsel</span></div><span class="material-symbols-outlined text-on-primary-container text-[18px]">more_vert</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-14 bg-surface-container-lowest z-40 flex items-center justify-between px-gutter-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md min-w-0"><nav class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant truncate"><span class="hover:text-on-surface cursor-pointer">Workspace</span><span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span><span class="hover:text-on-surface cursor-pointer truncate max-w-[220px]">National Student Innovation Grant 2026</span><span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span><span class="text-on-surface font-semibold truncate">Evidence Ledger</span></nav><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-low rounded"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-sm text-label-sm text-on-surface">Verified Ingestion</span></div></div><div class="flex items-center gap-space-md"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-space-sm text-outline text-[18px]">search</span><input class="w-64 bg-surface-container-low rounded pl-8 pr-space-md py-space-xs font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest" placeholder="Search references, citations, entity logs..." type="text"/></div><div class="h-6 w-[1px] bg-surface-container-high"></div><div class="flex items-center gap-space-xs"><button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">compare_arrows</span><span>Compare</span></button><button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">download</span><span>Export Notice</span></button><button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-primary text-on-primary font-label-md text-label-md hover:bg-surface-tint transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">verified</span><span>Audit &amp; Approve</span></button></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-14 bg-background w-full min-h-screen"><div class="flex flex-col w-full">
+<div class="px-gutter-lg py-space-lg flex flex-col gap-space-lg">
+<!-- Top Ledger Header & Institutional Metadata -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-xs">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Ledger Subsystem</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container-high px-space-xs rounded">ID: LEDGER-2026-0418</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Demonstration Dataset • MoECRT Circular Ref: No. 0418/E2/DT.01/2026</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Evidence Ledger</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Every important finding should have a traceable source.</p>
+</div>
+<!-- Action Utilities -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-space-sm text-outline text-[16px]">filter_list</span>
+<input class="w-56 bg-surface-container-lowest rounded pl-8 pr-space-md py-space-xs font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none shadow-sm" id="ledgerSearchInput" placeholder="Filter references..." type="text"/>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container transition-colors" id="exportLedgerBtn" type="button">
+<span class="material-symbols-outlined text-[16px]">ios_share</span>
+<span>Export Ledger (CSV/PDF)</span>
+</button>
+</div>
+</div>
+<!-- Epistemic Guardrail Notice Banner -->
+<div class="bg-primary-container text-on-secondary-container rounded-lg p-space-md flex items-start gap-space-md shadow-sm">
+<div class="w-8 h-8 rounded bg-secondary-container text-on-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div class="flex flex-col gap-space-xs flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary-fixed font-bold">Epistemic Guardrail Protocol • Forensic Rule #01</span>
+<span class="font-code-sm text-code-sm text-on-primary-container">ARCHIVAL AUTH: VERIFIED INGESTION</span>
+</div>
+<p class="font-body-md text-body-md text-on-secondary-container leading-relaxed">
+<strong class="font-semibold text-secondary-fixed">Epistemic Principle:</strong> A verbatim text match verifies that an assertion was stated in the announcement, not that the underlying claim is independently factual or procedurally complete. Always review cross-referenced institutional circulars.
+        </p>
+</div>
+</div>
+<!-- Status Toggles & Quick Filters Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low p-space-xs rounded">
+<div class="flex items-center gap-space-xs" id="statusFilterPills">
+<button class="filter-pill active px-space-md py-space-xs rounded font-label-md text-label-md bg-primary text-on-primary shadow-sm flex items-center gap-space-xs transition-colors" data-filter="all">
+<span>All Claims</span>
+<span class="bg-surface-tint text-on-primary font-code-sm text-[10px] px-1.5 py-0.2 rounded-full">4</span>
+</button>
+<button class="filter-pill px-space-md py-space-xs rounded font-label-md text-label-md bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-space-xs" data-filter="supported">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+<span>Supported Matches</span>
+<span class="text-on-surface-variant font-code-sm text-code-sm">2</span>
+</button>
+<button class="filter-pill px-space-md py-space-xs rounded font-label-md text-label-md bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-space-xs" data-filter="verification">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Needs Verification</span>
+<span class="text-on-surface-variant font-code-sm text-code-sm">1</span>
+</button>
+<button class="filter-pill px-space-md py-space-xs rounded font-label-md text-label-md bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-space-xs" data-filter="omitted">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span>Unknown / Omitted</span>
+<span class="text-on-surface-variant font-code-sm text-code-sm">1</span>
+</button>
+</div>
+<div class="flex items-center gap-space-sm px-space-sm text-on-surface-variant font-label-sm text-label-sm">
+<span>Displaying: <strong>4 of 4 Claims Audited</strong></span>
+<span class="text-outline-variant">•</span>
+<button class="text-secondary font-semibold hover:underline" id="toggleAllRecords">Collapse All Details</button>
+</div>
+</div>
+<!-- Main Workspace Multi-Pane Split Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- Primary Column: Traceable Claim-to-Evidence Cards (xl:col-span-8) -->
+<div class="xl:col-span-8 flex flex-col gap-space-md" id="ledgerRecordsContainer">
+<!-- RECORD E-001 (Supported Match) -->
+<article class="ledger-record flex flex-col bg-surface-container-lowest rounded shadow-sm overflow-hidden" data-status="supported">
+<!-- Card Header & Metadata Bar -->
+<div class="px-space-md py-space-sm bg-surface-container-low flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-sm text-code-sm font-bold bg-primary text-on-primary px-space-xs py-0.5 rounded">Ref: E-001</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Section 2 · Paragraph P03, Lines 1–2</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                Supported Text Match
+              </span>
+<span class="font-code-sm text-[10px] uppercase bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded">Verbatim Circular Provision</span>
+</div>
+</div>
+<!-- Dual Anchored Claim-to-Evidence Bridge Grid -->
+<div class="p-space-md grid grid-cols-1 md:grid-cols-2 gap-space-md relative">
+<!-- Left: Synthesized / Extracted AI Claim -->
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Synthesized Finding</span>
+<span class="material-symbols-outlined text-outline text-[16px]">smart_toy</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface font-semibold pt-space-xs">
+                “The program awards non-repayable innovation grants up to IDR 100,000,000 per selected undergraduate team.”
+              </p>
+<div class="mt-space-sm pt-space-xs flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Entity target: <strong>Grant Maximum Allocation</strong></span>
+</div>
+</div>
+<!-- Visual Link Indicator (Centered between columns on desktop) -->
+<div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-surface-container-high items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">sync_alt</span>
+</div>
+<!-- Right: Primary Source Citation -->
+<div class="flex flex-col gap-space-xs bg-surface-container-low rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm font-bold bg-surface-container-highest text-on-surface px-1 rounded">P03</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Primary Verbatim Circular</span>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container text-[16px]">menu_book</span>
+</div>
+<blockquote class="font-body-md text-body-md text-on-surface font-serif italic pt-space-xs leading-relaxed">
+                “The program offers competitive non-repayable project grants of up to IDR 100,000,000 per selected proposal, which shall be remitted in multiple sequential disbursements upon verification.”
+              </blockquote>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span>MoECRT No. 0418/E2/DT.01/2026</span>
+<span class="text-on-tertiary-container font-semibold">100% Lexical Alignment</span>
+</div>
+</div>
+</div>
+<!-- Forensic Diagnostic Details & Explanation Accordion -->
+<div class="record-details px-space-md pb-space-md pt-0">
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[16px]">analytics</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wider">Forensic Audit &amp; Analysis</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-normal">
+                The source circular explicitly specifies both the non-repayable grant mechanism and the ceiling of IDR 100M. The extracted figure and grant type match verbatim. However, note that disbursement criteria are deferred to supplementary guidelines.
+              </p>
+</div>
+</div>
+<!-- Card Utility Footer -->
+<div class="px-space-md py-space-xs bg-surface-container-lowest flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<button class="action-jump-src flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" data-ref="P03">
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+<span>Jump to Source (P03)</span>
+</button>
+<button class="action-copy-citation flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" data-quote="MoECRT Circular 0418, P03: Competitive non-repayable project grants up to IDR 100M.">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy Citation</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded hover:bg-surface-container-low text-secondary font-label-sm text-label-sm transition-colors">
+<span>View Related Analysis</span>
+</button>
+</div>
+<button class="toggle-detail-btn text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span>Collapse Details</span>
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+</button>
+</div>
+</article>
+<!-- RECORD E-002 (Supported Match - Demonstration Sample) -->
+<article class="ledger-record flex flex-col bg-surface-container-lowest rounded shadow-sm overflow-hidden" data-status="supported">
+<div class="px-space-md py-space-sm bg-surface-container-low flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-sm text-code-sm font-bold bg-primary text-on-primary px-space-xs py-0.5 rounded">Ref: E-002</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Section 3 · Paragraph P04, Line 2</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                Supported Text Match
+              </span>
+<span class="font-code-sm text-[10px] uppercase bg-secondary-fixed text-on-secondary-fixed font-semibold px-space-xs py-0.5 rounded">Demonstration Sample Record</span>
+</div>
+</div>
+<div class="p-space-md grid grid-cols-1 md:grid-cols-2 gap-space-md relative">
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Synthesized Finding</span>
+<span class="material-symbols-outlined text-outline text-[16px]">schedule</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface font-semibold pt-space-xs">
+                “Applications close on 15 December 2026 (Demonstration Sample: In active MoECRT filing, cutoff is May 31, 2026 at 23:59 WIB).”
+              </p>
+<div class="mt-space-sm pt-space-xs flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Entity target: <strong>Submission Deadline Window</strong></span>
+</div>
+</div>
+<div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-surface-container-high items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">sync_alt</span>
+</div>
+<div class="flex flex-col gap-space-xs bg-surface-container-low rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm font-bold bg-surface-container-highest text-on-surface px-1 rounded">P04</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Primary Verbatim Circular</span>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container text-[16px]">menu_book</span>
+</div>
+<blockquote class="font-body-md text-body-md text-on-surface font-serif italic pt-space-xs leading-relaxed">
+                “All applications must be submitted no later than 15 December 2026 via the centralized higher education portal.”
+              </blockquote>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span>MoECRT Paragraph P04 · Ref E-002</span>
+<span class="text-on-tertiary-container font-semibold">Direct Timestamp Match</span>
+</div>
+</div>
+</div>
+<div class="record-details px-space-md pb-space-md pt-0">
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[16px]">analytics</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wider">Forensic Audit &amp; Analysis</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-normal">
+                Direct temporal specification match. Server gate registers hard closure with zero tolerance for administrative extensions. Proponents must account for digital signature synchronization overhead before this date.
+              </p>
+</div>
+</div>
+<div class="px-space-md py-space-xs bg-surface-container-lowest flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<button class="action-jump-src flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" data-ref="P04">
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+<span>Jump to Source (P04)</span>
+</button>
+<button class="action-copy-citation flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" data-quote="MoECRT Circular 0418, P04: Deadline December 15, 2026 portal submission.">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy Citation</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded hover:bg-surface-container-low text-secondary font-label-sm text-label-sm transition-colors">
+<span>View Related Analysis</span>
+</button>
+</div>
+<button class="toggle-detail-btn text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span>Collapse Details</span>
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+</button>
+</div>
+</article>
+<!-- RECORD E-003 (Needs Verification / Regulatory Ambiguity) -->
+<article class="ledger-record flex flex-col bg-surface-container-lowest rounded shadow-sm overflow-hidden" data-status="verification">
+<div class="px-space-md py-space-sm bg-surface-container-low flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-sm text-code-sm font-bold bg-primary text-on-primary px-space-xs py-0.5 rounded">Ref: E-003</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Section 2 · Paragraph P03, Sentence 4</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">help_center</span>
+                Needs Verification
+              </span>
+<span class="font-code-sm text-[10px] uppercase bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded">Incomplete Operational Specification</span>
+</div>
+</div>
+<div class="p-space-md grid grid-cols-1 md:grid-cols-2 gap-space-md relative">
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Synthesized Finding</span>
+<span class="material-symbols-outlined text-outline text-[16px]">warning</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface font-semibold pt-space-xs">
+                “Grant disbursements occur in predetermined milestone tranches (e.g., 70/30 or 50/40/10 split).”
+              </p>
+<div class="mt-space-sm pt-space-xs flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Entity target: <strong>Disbursement Tranche Schedule</strong></span>
+</div>
+</div>
+<div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-surface-container-high items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">alt_route</span>
+</div>
+<div class="flex flex-col gap-space-xs bg-surface-container-low rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm font-bold bg-surface-container-highest text-on-surface px-1 rounded">P03</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Primary Verbatim Circular</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[16px]">description</span>
+</div>
+<blockquote class="font-body-md text-body-md text-on-surface font-serif italic pt-space-xs leading-relaxed">
+                “Detailed technical guidelines, budget breakdown sheets, and institutional endorsement portals can be accessed through the official portal. However, precise procedural tranche milestone criteria and quarterly expenditure receipts are omitted from this initial circular annex.”
+              </blockquote>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span>MoECRT Paragraph P03 · Sentence 4</span>
+<span class="text-secondary font-semibold">Semantic Gap Detected</span>
+</div>
+</div>
+</div>
+<div class="record-details px-space-md pb-space-md pt-0">
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[16px]">priority_high</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wider">Forensic Audit &amp; Analysis</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-normal">
+<strong class="font-semibold text-secondary">Unverified Assumption:</strong> While the circular mentions sequential disbursements, the specific ratio benchmarks (70/30 or 50/40/10) are completely absent from the text and represent institutional inference rather than documented mandate. Proponents must not commit capital based on unverified tranches.
+              </p>
+</div>
+</div>
+<div class="px-space-md py-space-xs bg-surface-container-lowest flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<button class="action-jump-src flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" data-ref="P03">
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+<span>Jump to Source (P03)</span>
+</button>
+<button class="action-copy-citation flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" data-quote="MoECRT Circular 0418, P03: Milestone tranches are omitted from this initial circular annex.">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy Citation</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded hover:bg-surface-container-low text-secondary font-label-sm text-label-sm transition-colors">
+<span>View Related Analysis</span>
+</button>
+</div>
+<button class="toggle-detail-btn text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span>Collapse Details</span>
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+</button>
+</div>
+</article>
+<!-- RECORD E-004 (Unknown / Omitted Information) -->
+<article class="ledger-record flex flex-col bg-surface-container-lowest rounded shadow-sm overflow-hidden" data-status="omitted">
+<div class="px-space-md py-space-sm bg-surface-container-low flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-sm text-code-sm font-bold bg-primary text-on-primary px-space-xs py-0.5 rounded">Ref: E-004</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Section 4 · Administrative Provisions</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">block</span>
+                Unknown / Unstated in Document
+              </span>
+<span class="font-code-sm text-[10px] uppercase bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded">Documentary Silence</span>
+</div>
+</div>
+<div class="p-space-md grid grid-cols-1 md:grid-cols-2 gap-space-md relative">
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Synthesized Finding</span>
+<span class="material-symbols-outlined text-outline text-[16px]">help_outline</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface font-semibold pt-space-xs">
+                “Lead institutions are permitted to deduct up to 10% for university administrative overhead and facility costs.”
+              </p>
+<div class="mt-space-sm pt-space-xs flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span>Entity target: <strong>Institutional Indirect Cost Ratio</strong></span>
+</div>
+</div>
+<div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-surface-container-high items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-outline text-[16px]">close</span>
+</div>
+<div class="flex flex-col gap-space-xs bg-surface-container-low rounded p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm font-bold bg-surface-container-highest text-outline px-1 rounded">NULL</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Primary Verbatim Circular</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">search_off</span>
+</div>
+<blockquote class="font-body-md text-body-md text-outline font-serif italic pt-space-xs leading-relaxed">
+                “[No Matching Text in Circular 0418/E2/DT.01/2026 — Zero occurrences of overhead deduction permissions.]”
+              </blockquote>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span>MoECRT Section 4 Scan</span>
+<span class="text-outline font-semibold">0 Instances Located</span>
+</div>
+</div>
+</div>
+<div class="record-details px-space-md pb-space-md pt-0">
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[16px]">info</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wider">Forensic Audit &amp; Analysis</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-normal">
+<strong class="font-semibold text-on-surface">Complete Regulatory Silence:</strong> The circular does not authorize or mention institutional deduction percentages. Teams must treat this item as unconfirmed pending formal ministry clarification. In past cycles, deductions without explicit decree were clawed back.
+              </p>
+</div>
+</div>
+<div class="px-space-md py-space-xs bg-surface-container-lowest flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[14px]">search</span>
+<span>Search Document</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low hover:bg-surface-container-high text-secondary font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[14px]">flag</span>
+<span>Flag Regulatory Gap</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded hover:bg-surface-container-low text-secondary font-label-sm text-label-sm transition-colors">
+<span>View Related Analysis</span>
+</button>
+</div>
+<button class="toggle-detail-btn text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span>Collapse Details</span>
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+</button>
+</div>
+</article>
+</div>
+<!-- Right Supporting Audit Rail & Rigorous Forensic Panels (xl:col-span-4) -->
+<aside class="xl:col-span-4 flex flex-col gap-space-md">
+<!-- Ledger Summary Metric Card -->
+<div class="bg-surface-container-lowest rounded p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Ledger Integrity Summary</span>
+<span class="font-code-sm text-code-sm text-secondary font-bold">MoECRT-2026</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-low p-space-sm rounded flex flex-col">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">4</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Claims Audited</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded flex flex-col">
+<span class="font-headline-lg text-headline-lg font-bold text-on-tertiary-container">2</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Verbatim Supported</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded flex flex-col">
+<span class="font-headline-lg text-headline-lg font-bold text-secondary">1</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Ambiguous / Caveat</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded flex flex-col">
+<span class="font-headline-lg text-headline-lg font-bold text-outline">1</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Deficit / Omission</span>
+</div>
+</div>
+<!-- Integrity Ratio Visual Line -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Ledger Verification Balance</span>
+<span class="font-code-sm">50% Verbatim Match</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded overflow-hidden flex">
+<div class="h-full bg-on-tertiary-container" style="width: 50%" title="50% Supported"></div>
+<div class="h-full bg-secondary" style="width: 25%" title="25% Needs Verification"></div>
+<div class="h-full bg-outline" style="width: 25%" title="25% Omitted"></div>
+</div>
+</div>
+</div>
+<!-- Epistemic Matrix Explanation Card -->
+<div class="bg-surface-container-lowest rounded p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">account_tree</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Lexical Match vs Semantic Truth</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Forensic analysis in ClearNotice AI distinguishes strictly between syntactic textual presence and regulatory factuality:
+          </p>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="bg-surface-container-low p-space-sm rounded flex flex-col gap-1">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">1. Syntactic Verification</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Confirms identical token strings exist in the announced ministry bulletin without transcription error.</p>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded flex flex-col gap-1">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">2. Procedural Completeness</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Examines whether statutory prerequisites, appendices, or secondary circulars override or condition the provision.</p>
+</div>
+</div>
+</div>
+<!-- Document Clauses Quick Filter Card -->
+<div class="bg-surface-container-lowest rounded p-space-md shadow-sm flex flex-col gap-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Quick Filter by Document Clause</span>
+<div class="flex flex-col gap-space-xs">
+<button class="clause-filter-btn flex items-center justify-between p-space-xs rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-colors text-left" data-clause="eligibility">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm text-secondary font-bold">§ 01</span>
+<span>Applicant Eligibility &amp; Standing</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">2 refs</span>
+</button>
+<button class="clause-filter-btn flex items-center justify-between p-space-xs rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-colors text-left" data-clause="capital">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm text-secondary font-bold">§ 02</span>
+<span>Capital, Ceilings &amp; Tranches</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">2 refs</span>
+</button>
+<button class="clause-filter-btn flex items-center justify-between p-space-xs rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-colors text-left" data-clause="windows">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm text-secondary font-bold">§ 03</span>
+<span>Submission Windows &amp; Deadlines</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">1 ref</span>
+</button>
+<button class="clause-filter-btn flex items-center justify-between p-space-xs rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-colors text-left" data-clause="admin">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm text-secondary font-bold">§ 04</span>
+<span>Administrative Overhead &amp; Certs</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">1 ref</span>
+</button>
+</div>
+</div>
+<!-- Cryptographic Provenance Ledger Card -->
+<div class="bg-surface-container-lowest rounded p-space-md shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Cryptographic Provenance</span>
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container" title="Ledger Verified"></span>
+</div>
+<div class="flex flex-col gap-0.5 pt-space-xs text-on-surface-variant font-code-sm text-code-sm">
+<div class="flex justify-between">
+<span>Source File:</span>
+<span class="text-on-surface font-semibold truncate max-w-[170px]" title="MoECRT_Grant_Circular_2026.pdf">MoECRT_Grant_2026.pdf</span>
+</div>
+<div class="flex justify-between">
+<span>Ingested:</span>
+<span class="text-on-surface">Apr 15, 2026 14:22 WIB</span>
+</div>
+<div class="flex justify-between">
+<span>SHA-256:</span>
+<span class="text-on-surface font-bold">e7b9...42f1</span>
+</div>
+<div class="flex justify-between">
+<span>Ledger Node:</span>
+<span class="text-on-surface">CLEARNOTICE-ID-01</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</div>
+<script>
+  // Simple Vanilla Interactive Functionality for Evidence Ledger Workbench
+  (function() {
+    // 1. Status Filter Tabs
+    const filterButtons = document.querySelectorAll('#statusFilterPills .filter-pill');
+    const records = document.querySelectorAll('.ledger-record');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary', 'text-on-primary');
+          b.classList.add('bg-surface-container-lowest', 'text-on-surface');
+        });
+        btn.classList.add('bg-primary', 'text-on-primary');
+        btn.classList.remove('bg-surface-container-lowest', 'text-on-surface');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        records.forEach(rec => {
+          if (filterValue === 'all') {
+            rec.classList.remove('hidden');
+          } else {
+            const status = rec.getAttribute('data-status');
+            if (status === filterValue) {
+              rec.classList.remove('hidden');
+            } else {
+              rec.classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
+
+    // 2. Individual Card Accordion Toggle
+    const detailToggleButtons = document.querySelectorAll('.toggle-detail-btn');
+    detailToggleButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const article = btn.closest('article');
+        const details = article.querySelector('.record-details');
+        const label = btn.querySelector('span:first-child');
+        const icon = btn.querySelector('.material-symbols-outlined');
+
+        if (details.classList.contains('hidden')) {
+          details.classList.remove('hidden');
+          label.textContent = 'Collapse Details';
+          icon.textContent = 'expand_less';
+        } else {
+          details.classList.add('hidden');
+          label.textContent = 'Expand Details';
+          icon.textContent = 'expand_more';
+        }
+      });
+    });
+
+    // 3. Global Collapse/Expand All Details
+    const globalToggleBtn = document.getElementById('toggleAllRecords');
+    let allExpanded = true;
+    if (globalToggleBtn) {
+      globalToggleBtn.addEventListener('click', () => {
+        const detailPanels = document.querySelectorAll('.record-details');
+        allExpanded = !allExpanded;
+        
+        detailPanels.forEach(panel => {
+          if (allExpanded) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        });
+
+        detailToggleButtons.forEach(btn => {
+          const label = btn.querySelector('span:first-child');
+          const icon = btn.querySelector('.material-symbols-outlined');
+          if (allExpanded) {
+            label.textContent = 'Collapse Details';
+            icon.textContent = 'expand_less';
+          } else {
+            label.textContent = 'Expand Details';
+            icon.textContent = 'expand_more';
+          }
+        });
+
+        globalToggleBtn.textContent = allExpanded ? 'Collapse All Details' : 'Expand All Details';
+      });
+    }
+
+    // 4. Citation Copy Micro-interaction
+    const copyButtons = document.querySelectorAll('.action-copy-citation');
+    copyButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const quote = btn.getAttribute('data-quote') || '';
+        navigator.clipboard.writeText(quote).catch(() => {});
+        const spanText = btn.querySelector('span:last-child');
+        const originalText = spanText.textContent;
+        spanText.textContent = 'Citation Copied!';
+        setTimeout(() => {
+          spanText.textContent = originalText;
+        }, 1800);
+      });
+    });
+
+    // 5. Jump to Source Indicator Micro-feedback
+    const jumpButtons = document.querySelectorAll('.action-jump-src');
+    jumpButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ref = btn.getAttribute('data-ref');
+        btn.classList.add('bg-secondary', 'text-on-secondary');
+        setTimeout(() => {
+          btn.classList.remove('bg-secondary', 'text-on-secondary');
+        }, 400);
+      });
+    });
+
+    // 6. Search Ledger input filter
+    const searchInput = document.getElementById('ledgerSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        records.forEach(rec => {
+          const text = rec.innerText.toLowerCase();
+          if (text.includes(query)) {
+            rec.classList.remove('hidden');
+          } else {
+            rec.classList.add('hidden');
+          }
+        });
+      });
+    }
+
+    // 7. Export Ledger notice feedback
+    const exportBtn = document.getElementById('exportLedgerBtn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        const span = exportBtn.querySelector('span:last-child');
+        const prev = span.textContent;
+        span.textContent = 'Generating PDF/CSV...';
+        setTimeout(() => {
+          span.textContent = 'Ledger Exported';
+          setTimeout(() => {
+            span.textContent = prev;
+          }, 1500);
+        }, 800);
+      });
+    }
+  })();
+</script></main></div></body></html>

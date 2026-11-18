@@ -349,11 +349,12 @@ The current workspace is a local prototype, not the production AI flow. It uses 
 ### Applied design decisions
 - Reading this as: an announcement investigation workspace for students and community members, in a precise editorial style, dial ENERGY 1 / RHYTHM 2 / MOTION 1.
 - The source and findings sit side by side on wide screens so users can compare evidence without losing the source; they stack on narrower screens to preserve readable text widths.
-- Navy and slate establish an editorial reading surface, while emerald is reserved for source links and supported text matches. Amber signals review or demo status, not confidence.
-- Geist is retained from the existing Next.js foundation as a readable sans-serif for dense document text and compact labels.
+- Navy and slate frame the workspace, cobalt marks navigation and source-jump actions, emerald marks text matches, and amber marks items needing review or fictional sample content.
+- Geist is retained from the existing Next.js foundation for dense interface text. A restrained serif face distinguishes announcement prose and editorial headings from controls and metadata.
 - The prototype ships in light mode only because source comparison is the primary task and a paper-like surface keeps long excerpts readable; there is no nonfunctional theme toggle.
 - Amber and rose are reserved for review/demo and validation states, so they add meaning without expanding the core palette.
-- Evidence passages receive the strongest accent because traceability is the product's differentiating interaction. Repeated E## citations connect inline source highlights to the evidence ledger.
+- Cobalt highlights source jumps and active evidence because traceability is the product's differentiating interaction. Repeated E## citations connect inline source highlights to the evidence ledger; emerald is reserved for matched-text status.
+- Warm paper surfaces distinguish the original notice from structured findings, helping readers keep source text visually primary.
 - Separate sections group dates, requirements, actions, and unknowns by the decisions users need to make. Panels use restrained borders and varied section compositions rather than uniform dashboard cards.
 - Panel, control, and status radii vary by hierarchy. The evidence dialog alone uses a shadow to distinguish its elevated layer from the dimmed workspace.
 - File, calendar, checklist, citation, warning, and navigation icons clarify labeled actions; icons never replace their text labels.

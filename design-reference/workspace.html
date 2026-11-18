@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClearNotice AI — Announcement Investigation Workspace</title>
+<!-- Distinctive Editorial Typography: Newsreader (Editorial Serif) & Inter / JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              ink: '#0b1120',
+              paper: '#fcfcf9',
+              parchment: '#f5f4ef',
+              border: '#e2e0d8',
+              line: '#eeece2',
+              cobalt: '#0047bb',
+              cobaltDark: '#003380',
+              amberNotice: '#b45309',
+              emeraldVerified: '#047857',
+              crimsonAlert: '#b91c1c'
+            },
+            editorial: {
+              lead: '#1e293b',
+              body: '#334155',
+              muted: '#64748b',
+              faint: '#94a3b8'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    
+    /* Document Reader custom hairline styling */
+    .doc-page-shadow {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 10px 24px -8px rgba(15, 23, 42, 0.06);
+    }
+    
+    /* Exact anchor highlighting states */
+    .anchor-active-verbatim {
+      background-color: #e0f2fe !important;
+      border-bottom: 2px solid #0284c7 !important;
+      color: #0369a1 !important;
+    }
+    .anchor-active-warning {
+      background-color: #fef3c7 !important;
+      border-bottom: 2px dashed #d97706 !important;
+      color: #92400e !important;
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-[#f2f3f5] text-editorial-lead font-sans antialiased h-screen flex flex-col overflow-hidden text-[13px] select-none">
+<!-- ========================================================================= -->
+<!-- 1. PRODUCT IDENTITY & TOP INVESTIGATION TOOLSTRIP                         -->
+<!-- ========================================================================= -->
+<header class="bg-[#0b1120] text-slate-200 border-b border-slate-800 flex-shrink-0 z-40">
+<!-- Row 1: Brand & Investigation Meta Bar -->
+<div class="px-5 py-2.5 flex items-center justify-between border-b border-slate-800/80">
+<div class="flex items-center space-x-3">
+<!-- Logo & Product Hierarchy -->
+<div class="flex items-center space-x-2">
+<div class="w-6 h-6 rounded bg-blue-600 flex items-center justify-center font-mono font-bold text-xs text-white tracking-tighter">
+            CN
+          </div>
+<div class="flex items-baseline space-x-2">
+<span class="font-bold tracking-tight text-white text-sm">ClearNotice AI</span>
+<span class="text-slate-400 text-xs hidden sm:inline">/</span>
+<span class="text-xs text-slate-300 font-medium tracking-wide hidden sm:inline">Announcement Investigation Workspace</span>
+</div>
+</div>
+<span class="text-[10px] font-mono tracking-wider uppercase bg-blue-950 text-blue-300 px-2 py-0.5 rounded border border-blue-800/60 font-semibold">
+          Editorial &amp; Legal-Grade Verification (Simulasi Prototipe)
+        </span>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center space-x-2 text-xs">
+<button class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-mono text-[11px] flex items-center space-x-1.5 transition-colors cursor-pointer" onclick="openAuditModal()" title="Buka Catatan Log Jejak Verifikasi">
+<svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Riwayat Audit Bukti (Drawer)</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs flex items-center space-x-1.5 transition-colors cursor-pointer" onclick="openExportModal()">
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Export Dossier (PDF)</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center space-x-1 transition-colors cursor-pointer" onclick="triggerReanalysis()">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Re-parse Source</span>
+</button>
+</div>
+</div>
+<!-- Row 2: Persistent Investigation Toolstrip -->
+<div class="px-5 py-2 flex items-center justify-between bg-[#080d19] text-[11px] font-mono text-slate-400 flex-wrap gap-2">
+<!-- Active Document Record -->
+<div class="flex items-center space-x-3">
+<div class="flex items-center space-x-1.5 text-slate-200">
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="font-bold text-white tracking-normal">NSIG_2026_Announcement_Official_MoECRT.pdf</span>
+</div>
+<span class="text-slate-600">|</span>
+<div>SHA-256: <span class="text-slate-300">8f0b1a45...c712e9b0</span></div>
+<span class="text-slate-600 hidden md:inline">|</span>
+<div class="hidden md:inline">Ingested: <span class="text-slate-300">2026-04-15 09:30:14 WIB</span></div>
+<span class="text-slate-600 hidden lg:inline">|</span>
+<a class="text-blue-400 hover:text-blue-300 underline flex items-center space-x-1 hidden lg:inline-flex" href="https://moecrt.go.id/nsig-2026" target="_blank">
+<span>Source: moecrt.go.id/nsig-2026</span>
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</div>
+<!-- State Simulator Switcher -->
+<div class="flex items-center space-x-1 bg-slate-900 border border-slate-700/80 p-0.5 rounded text-[11px] font-sans">
+<span class="text-[10px] font-mono text-slate-400 px-1.5 uppercase tracking-wider font-semibold">Workspace Mode:</span>
+<button class="px-2 py-0.5 rounded font-semibold bg-blue-600 text-white transition-all" id="btn-state-active" onclick="setSimulatedState('active')">
+          Investigation Mode
+        </button>
+<button class="px-2 py-0.5 rounded font-medium text-slate-400 hover:text-white transition-all" id="btn-state-empty" onclick="setSimulatedState('empty')">
+          Empty
+        </button>
+<button class="px-2 py-0.5 rounded font-medium text-slate-400 hover:text-white transition-all" id="btn-state-processing" onclick="setSimulatedState('processing')">
+          Processing
+        </button>
+<button class="px-2 py-0.5 rounded font-medium text-slate-400 hover:text-white transition-all" id="btn-state-error" onclick="setSimulatedState('error')">
+          Paywall / Error
+        </button>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE VIEWPORT                                                   -->
+<!-- ========================================================================= -->
+<main class="flex-1 overflow-hidden relative flex" id="workspace-viewport">
+<!-- STATE 1: ACTIVE INVESTIGATION MODE -->
+<div class="w-full h-full flex overflow-hidden" id="state-active-view">
+<!-- ===================================================================== -->
+<!-- 2. DEDICATED SOURCE DOCUMENT WORKSPACE (Left pane ~48% width)         -->
+<!-- ===================================================================== -->
+<section class="w-full lg:w-[48%] border-r border-[#dcdad0] bg-[#f9f8f4] flex flex-col h-full flex-shrink-0 select-text overflow-hidden" data-purpose="source-document-panel">
+<!-- Document Meta / Editorial Header -->
+<div class="p-4 bg-[#f4f2ea] border-b border-[#dfdcce] flex-shrink-0 space-y-2 select-none">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500 flex items-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+<span>Canonical Ingested Source Document</span>
+</span>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 font-semibold">
+              OCR &amp; Hash Verified (100%)
+            </span>
+</div>
+<h1 class="font-serif font-bold text-lg text-slate-900 leading-tight">
+            National Student Innovation Grant (NSIG) 2026 — Program Guidelines &amp; Call for Proposals
+          </h1>
+<div class="flex items-center space-x-3 text-xs text-slate-600 font-serif italic">
+<span>Publisher: Ministry of Education, Culture, Research, and Technology (MoECRT)</span>
+<span>•</span>
+<span class="font-mono text-[11px] not-italic text-slate-500">DocID: ID-MOECRT-2026-NSIG-01</span>
+</div>
+<!-- Document Section Navigation Bar -->
+<div class="pt-2 border-t border-[#e5e2d4] flex items-center space-x-1 text-[11px] font-mono overflow-x-auto text-slate-600">
+<span class="text-slate-400 mr-1 text-[10px] uppercase font-bold">Quick Jump:</span>
+<a class="px-2 py-0.5 rounded hover:bg-white hover:text-slate-900 transition-colors" href="#doc-para-1">#P1 Intro</a>
+<a class="px-2 py-0.5 rounded hover:bg-white hover:text-slate-900 transition-colors" href="#doc-para-2">#P2 Target &amp; Eligibility</a>
+<a class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-semibold hover:bg-blue-200 transition-colors" href="#doc-para-3">#P3 Capital &amp; Deadlines</a>
+<a class="px-2 py-0.5 rounded hover:bg-rose-100 hover:text-rose-900 transition-colors" href="#doc-para-4">#P4 Penalties</a>
+</div>
+</div>
+<!-- Document Body Reader (Warm Paper Editorial Feel) -->
+<div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 font-serif text-[15px] leading-[1.75] text-[#292f3b] bg-[#fbfaf6]">
+<!-- Notice Banner stamp inside paper -->
+<div class="border-y border-[#e3dfd0] py-2 flex items-center justify-between text-[11px] font-mono text-slate-500 select-none">
+<span>DIRECTORATE GENERAL OF HIGHER EDUCATION</span>
+<span>CIRCULAR NO. 0418/E2/DT.01/2026</span>
+</div>
+<!-- Paragraph 1 -->
+<div class="relative group pl-7 border-l-2 border-transparent hover:border-slate-300 transition-colors" id="doc-para-1">
+<span class="absolute left-0 top-0 font-mono text-[10px] text-slate-400 select-none">#P1</span>
+<p>
+              The Ministry of Education, Culture, Research, and Technology (MoECRT), through the Directorate General of Higher Education, hereby announces the official commencement of the <strong class="font-semibold text-slate-900">National Student Innovation Grant (NSIG) Fiscal Year 2026</strong>. This flagship competitive initiative is instituted to accelerate institutional scientific research, cross-disciplinary technological entrepreneurship, and commercial prototypes developed by collegiate scholars.
+            </p>
+</div>
+<!-- Paragraph 2 -->
+<div class="relative group pl-7 border-l-2 border-transparent hover:border-slate-300 transition-colors" id="doc-para-2">
+<span class="absolute left-0 top-0 font-mono text-[10px] text-slate-400 select-none">#P2</span>
+<p>
+              Eligible student proponents must be active undergraduate students (<span class="font-sans text-xs font-semibold bg-slate-100 px-1 py-0.5 rounded text-slate-800">S1 / D4 degree tracks</span>) enrolled in accredited public or private universities across Indonesia at the time of proposal intake. Candidate teams are required to submit interdisciplinary project teams consisting of a minimum of three (3) active undergraduates representing at least two distinct departments within STEAM disciplines.
+            </p>
+</div>
+<!-- Paragraph 3 (Primary Evidence Anchor Hub) -->
+<div class="relative pl-7 border-l-2 border-blue-500 bg-[#f4f7fc]/70 p-4 rounded-r-lg space-y-2.5 transition-all" id="doc-para-3">
+<div class="flex items-center justify-between select-none">
+<span class="font-mono text-[11px] font-bold text-blue-800 tracking-wider uppercase">#P3 • Core Operative Clauses</span>
+<span class="font-sans text-[10px] text-blue-600 bg-blue-100 px-2 py-0.5 rounded font-medium">2 Evidence Citations Active</span>
+</div>
+<p class="text-[#1c2434]">
+              Formal proposal intake opens electronically on April 15, 2026. The official submission window closes irreversibly on 
+              <span class="font-semibold text-slate-900 bg-amber-100 px-1 rounded border-b border-amber-400">May 31, 2026 at 23:59 Western Indonesia Time (WIB)</span>.
+              
+              <!-- Evidence 01 Marked Anchor -->
+<span class="relative inline">
+<mark class="cursor-pointer bg-blue-100/90 text-blue-950 font-medium px-1.5 py-0.5 rounded border-b-2 border-blue-600 hover:bg-blue-200 transition-all" id="doc-citation-01" onclick="focusEvidence('01')" title="Klik untuk menginspeksi kartu bukti [01]">
+                  The program offers competitive non-repayable project grants of up to IDR 100,000,000 per selected proposal.
+                </mark>
+<button class="inline-flex items-center px-1.5 py-0.2 rounded bg-blue-600 text-white font-mono text-[10px] font-bold mx-0.5 shadow-2xs hover:bg-blue-700 cursor-pointer align-middle select-none" onclick="focusEvidence('01')" type="button">
+                  [01]
+                </button>
+</span>
+<!-- Evidence 02 Marked Anchor (Incomplete / Caveat) -->
+<span class="relative inline">
+<mark class="cursor-pointer bg-amber-50 text-amber-950 font-normal px-1.5 py-0.5 rounded border-b border-dashed border-amber-600 hover:bg-amber-100 transition-all" id="doc-citation-02" onclick="focusEvidence('02')" title="Klausul tidak lengkap: klik untuk inspeksi kartu catatan [02]">
+                  Detailed technical guidelines, budget breakdown sheets, and institutional endorsement portals can be accessed through the official portal.
+                </mark>
+<button class="inline-flex items-center px-1.5 py-0.2 rounded bg-amber-700 text-white font-mono text-[10px] font-bold mx-0.5 shadow-2xs hover:bg-amber-800 cursor-pointer align-middle select-none" onclick="focusEvidence('02')" type="button">
+                  [02]
+                </button>
+</span>
+</p>
+</div>
+<!-- Paragraph 4 (Penalties & Disqualification) -->
+<div class="relative group pl-7 border-l-2 border-rose-400 bg-rose-50/40 p-4 rounded-r-lg space-y-2" id="doc-para-4">
+<div class="flex items-center justify-between select-none">
+<span class="font-mono text-[11px] font-bold text-rose-800 uppercase tracking-wider">#P4 • Mandatory Compliance &amp; Penalties</span>
+<span class="font-mono text-[10px] text-rose-600 font-semibold">Strict Rule</span>
+</div>
+<p class="text-rose-950">
+              Late submissions, proposals exceeding the twenty (20) page maximum limit, or dossiers lacking formal Institutional Dean endorsement letter with stamp will be disqualified automatically during administrative pre-screening without administrative appeal or review extension.
+            </p>
+</div>
+<!-- Document End Sign-off -->
+<div class="pt-6 border-t border-[#e2decb] text-xs font-serif text-slate-500 space-y-1 select-none">
+<p class="font-semibold text-slate-700">Issued by:</p>
+<p>Directorate of Learning and Student Affairs</p>
+<p>MoECRT Complex Building D, Senayan, Jakarta</p>
+</div>
+</div>
+<!-- Document Footer Information -->
+<div class="px-5 py-2.5 bg-[#f4f2ea] border-t border-[#dedacf] flex items-center justify-between text-xs font-mono text-slate-600 select-none">
+<div class="flex items-center space-x-2">
+<span>Tokens: 342 words</span>
+<span>•</span>
+<span>Language: English (Official Circ.)</span>
+</div>
+<button class="hover:text-blue-700 flex items-center space-x-1 cursor-pointer font-sans text-xs" onclick="copyDocumentRaw(this)">
+<svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Salin Raw Text Dokumen</span>
+</button>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- RIGHT PANE (~52% width): EVIDENCE LEDGER + DECISION WORKSPACE        -->
+<!-- ===================================================================== -->
+<section class="flex-1 bg-[#f3f4f6] flex flex-col h-full overflow-y-auto select-none" data-purpose="ai-analysis-results">
+<!-- Header Strip: Investigation Status -->
+<div class="px-6 py-3 bg-white border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
+<span class="font-mono text-xs uppercase tracking-wider font-bold text-slate-800">
+              Investigation Intelligence Ledger &amp; Decision Dossier
+            </span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[11px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded font-semibold flex items-center space-x-1">
+<svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Verifikasi Semantik: 98% Pasti (Simulasi)</span>
+</span>
+</div>
+</div>
+<div class="p-6 space-y-6 max-w-5xl mx-auto w-full">
+<!-- ================================================================= -->
+<!-- 3. EVIDENCE INTELLIGENCE PANEL (Specialized Investigation Ledger) -->
+<!-- ================================================================= -->
+<div class="space-y-3" data-purpose="evidence-linking-container">
+<div class="flex items-center justify-between">
+<h2 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-2">
+<svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Evidence Ledger (Bi-Directional Citations)</span>
+</h2>
+<span class="text-[11px] font-mono text-slate-500">2 Verified Anchors in Corpus</span>
+</div>
+<!-- Evidence Card [01]: Inspected / Active State -->
+<div class="evidence-card bg-white border-2 border-blue-600 rounded-lg p-4 space-y-3 shadow-xs relative transition-all ring-2 ring-blue-500/10" id="evidence-card-01">
+<div class="flex items-center justify-between border-b border-slate-100 pb-2.5 flex-wrap gap-2">
+<div class="flex items-center space-x-2">
+<span class="px-2 py-0.5 text-xs font-mono font-bold bg-blue-600 text-white rounded">[01]</span>
+<span class="text-xs font-bold text-slate-900 uppercase tracking-wide">VERIFIED SOURCE CLAIM</span>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">Direct Verbatim Match</span>
+<span class="text-[10px] font-mono text-slate-400 font-medium">Simulasi Verifikasi</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<button class="px-2 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 flex items-center space-x-1 cursor-pointer" onclick="focusEvidence('01')" type="button">
+<svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Jump to Passage in Doc</span>
+</button>
+<button class="px-2 py-1 text-xs text-slate-600 hover:text-slate-900 bg-slate-50 border border-slate-200 rounded cursor-pointer" onclick="copySnippet(this, 'The program offers competitive non-repayable project grants of up to IDR 100,000,000 per selected proposal.')" type="button">
+                    Copy Citation
+                  </button>
+<button class="px-2 py-1 text-xs font-mono text-slate-500 hover:text-slate-800 bg-slate-50 border border-slate-200 rounded cursor-pointer" onclick="alert('Hash Validated: SHA256 verified against canonical archive ID-MOECRT-2026-NSIG-01')" type="button">
+                    Verify Hash
+                  </button>
+</div>
+</div>
+<div>
+<span class="text-[10px] font-mono font-bold uppercase text-slate-400 block mb-0.5">Extracted Operative Claim</span>
+<p class="text-xs font-medium text-slate-900 leading-snug">
+                  Maximum non-repayable institutional grant funding is IDR 100,000,000 per multidisciplinary undergraduate project team.
+                </p>
+</div>
+<!-- Archival Quote Block -->
+<div class="p-3 bg-[#fbfaf6] border-l-4 border-blue-600 rounded-r border border-[#e8e5d8] space-y-1">
+<div class="flex items-center justify-between text-[10px] font-mono text-slate-400">
+<span>LOCATION: Paragraph 3, Line 2–3</span>
+<span>CONFIDENCE: 0.98</span>
+</div>
+<blockquote class="font-serif italic text-xs text-slate-800 leading-relaxed">
+                  “The program offers competitive non-repayable project grants of up to IDR 100,000,000 per selected proposal.”
+                </blockquote>
+</div>
+</div>
+<!-- Evidence Card [02]: Caveat / Incomplete State -->
+<div class="evidence-card bg-white border border-amber-300 rounded-lg p-4 space-y-3 shadow-2xs hover:border-amber-400 transition-all" id="evidence-card-02">
+<div class="flex items-center justify-between border-b border-slate-100 pb-2.5 flex-wrap gap-2">
+<div class="flex items-center space-x-2">
+<span class="px-2 py-0.5 text-xs font-mono font-bold bg-amber-700 text-white rounded">[02]</span>
+<span class="text-xs font-bold text-amber-950 uppercase tracking-wide">OPEN CLAUSE / INCOMPLETE TERMS</span>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200 font-semibold">Caveat Noted — External Reference Required</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<button class="px-2 py-1 text-xs font-medium text-amber-900 bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 flex items-center space-x-1 cursor-pointer" onclick="focusEvidence('02')" type="button">
+<svg class="w-3 h-3 text-amber-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Jump to Passage</span>
+</button>
+<button class="px-2 py-1 text-xs text-slate-600 hover:text-slate-900 bg-slate-50 border border-slate-200 rounded cursor-pointer" onclick="alert('Flagged for reviewer checklist: Verifikasi klausul termin pencairan dana ke pihak Kemendikbud.')" type="button">
+                    Flag for Review
+                  </button>
+</div>
+</div>
+<div>
+<span class="text-[10px] font-mono font-bold uppercase text-slate-400 block mb-0.5">Extracted Operative Claim</span>
+<p class="text-xs text-slate-800 leading-snug">
+                  Disbursement schedule, overhead cap deduction, and tranche breakdown are not specified in the primary announcement text.
+                </p>
+</div>
+<!-- Archival Quote Block -->
+<div class="p-3 bg-amber-50/40 border-l-4 border-amber-600 rounded-r border border-amber-200/80 space-y-1">
+<div class="flex items-center justify-between text-[10px] font-mono text-amber-800/70">
+<span>LOCATION: Paragraph 3, Sentence 4</span>
+<span>STATUS: External Reference</span>
+</div>
+<blockquote class="font-serif italic text-xs text-amber-950 leading-relaxed">
+                  “Detailed technical guidelines, budget breakdown sheets, and institutional endorsement portals can be accessed through the official portal.”
+                </blockquote>
+</div>
+</div>
+</div>
+<!-- ================================================================= -->
+<!-- 4. DECISION WORKSPACE (Tailored Visual Domains)                   -->
+<!-- ================================================================= -->
+<div class="space-y-4">
+<!-- URGENT DEADLINES (High-contrast timeline banner) -->
+<div class="bg-[#0f172a] text-slate-100 rounded-xl p-5 border border-slate-800 space-y-4">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+<span class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">CRITICAL TIMELINE &amp; SUBMISSION CUTOFF</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="bg-amber-400 text-slate-950 font-bold px-2.5 py-0.5 rounded text-xs">
+                    46 Hari Tersisa (Strict Cutoff)
+                  </span>
+</div>
+</div>
+<!-- Detailed Milestone Tracker -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 border-t border-slate-800 text-xs">
+<div class="p-2.5 bg-slate-900/80 rounded border border-slate-800">
+<span class="text-[10px] font-mono text-slate-400 block uppercase">1. Intake Opened</span>
+<span class="font-semibold text-white block mt-0.5">Apr 15, 2026</span>
+<span class="text-[10px] text-emerald-400 font-mono">Active (Open)</span>
+</div>
+<div class="p-2.5 bg-amber-950/60 rounded border border-amber-600/60">
+<span class="text-[10px] font-mono text-amber-300 block uppercase">2. Strict Deadline</span>
+<span class="font-bold text-amber-200 block mt-0.5">May 31, 2026 (23:59 WIB)</span>
+<span class="text-[10px] text-rose-300 font-mono">No Appeal Window</span>
+</div>
+<div class="p-2.5 bg-slate-900/80 rounded border border-slate-800">
+<span class="text-[10px] font-mono text-slate-400 block uppercase">3. Review Period</span>
+<span class="font-semibold text-slate-300 block mt-0.5">Jun 15, 2026</span>
+<span class="text-[10px] text-slate-400 font-mono">Panel Assessment</span>
+</div>
+<div class="p-2.5 bg-slate-900/80 rounded border border-slate-800">
+<span class="text-[10px] font-mono text-slate-400 block uppercase">4. Disbursement</span>
+<span class="font-semibold text-slate-300 block mt-0.5">Jul 01, 2026</span>
+<span class="text-[10px] text-slate-400 font-mono">Estimated Tranche</span>
+</div>
+</div>
+</div>
+<!-- TWO-COLUMN SURGICAL BLOCKS: ELIGIBILITY & FINANCIAL LEDGER -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- ELIGIBILITY VERDICT (Surgical assessment table with pass/fail badges) -->
+<div class="bg-white border border-slate-300 rounded-lg p-4 space-y-3">
+<div class="flex items-center justify-between border-b border-slate-100 pb-2">
+<span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">Eligibility Verdict Matrix</span>
+<span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 font-mono">100% MATCH</span>
+</div>
+<div class="space-y-2 text-xs divide-y divide-slate-100">
+<div class="flex items-center justify-between pt-1">
+<span class="text-slate-700">Active Undergraduate (S1 / D4)</span>
+<span class="font-mono text-[11px] px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded font-semibold flex items-center space-x-1">
+<span>✓ PASS</span>
+<button class="underline text-blue-600 ml-1 font-bold" onclick="focusEvidence('01')">[01]</button>
+</span>
+</div>
+<div class="flex items-center justify-between pt-1.5">
+<span class="text-slate-700">Multidisciplinary team (≥ 3 members)</span>
+<span class="font-mono text-[11px] px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded font-semibold flex items-center space-x-1">
+<span>✓ PASS</span>
+<button class="underline text-blue-600 ml-1 font-bold" onclick="focusEvidence('01')">[01]</button>
+</span>
+</div>
+<div class="flex items-center justify-between pt-1.5">
+<span class="text-slate-700">Accredited Indonesian University</span>
+<span class="font-mono text-[11px] px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded font-semibold">
+                      ✓ PASS
+                    </span>
+</div>
+<div class="flex items-center justify-between pt-1.5">
+<span class="text-slate-700">Faculty Dean Formal Endorsement</span>
+<span class="font-mono text-[11px] px-2 py-0.5 bg-amber-50 text-amber-900 border border-amber-300 rounded font-semibold flex items-center space-x-1">
+<span>! MANDATORY</span>
+<button class="underline text-amber-800 ml-1 font-bold" onclick="focusEvidence('02')">[02]</button>
+</span>
+</div>
+</div>
+</div>
+<!-- COSTS & FINANCIAL STRUCTURE (Financial ledger block) -->
+<div class="bg-white border border-slate-300 rounded-lg p-4 space-y-3">
+<div class="flex items-center justify-between border-b border-slate-100 pb-2">
+<span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">Financial Structure Ledger</span>
+<span class="text-xs font-mono font-bold text-blue-900 bg-blue-100 px-2 py-0.5 rounded">CEILING: IDR 100M</span>
+</div>
+<div class="space-y-2 text-xs divide-y divide-slate-100">
+<div class="flex justify-between items-center pt-1">
+<span class="text-slate-600">Total Available Allocation:</span>
+<span class="font-mono font-bold text-slate-900">IDR 100,000,000</span>
+</div>
+<div class="flex justify-between items-center pt-1.5">
+<span class="text-slate-600">Repayment Obligation:</span>
+<span class="font-semibold text-emerald-700">Non-Repayable (Hibah Murni)</span>
+</div>
+<div class="flex justify-between items-center pt-1.5">
+<span class="text-slate-600">Application / Ingestion Fee:</span>
+<span class="font-mono text-emerald-700">FREE (Rp 0)</span>
+</div>
+<div class="flex justify-between items-center pt-1.5">
+<span class="text-slate-600">Tranche Breakdown:</span>
+<span class="font-mono text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">UNKNOWN IN NOTICE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RISK RADAR & UNKNOWN INFORMATION STRIPS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- RISK RADAR & CRITICAL WARNINGS (Amber/Red callout strip) -->
+<div class="p-4 bg-amber-50/70 border border-amber-300 rounded-lg space-y-2">
+<div class="flex items-center space-x-2 text-amber-900 font-mono text-xs font-bold uppercase tracking-wider">
+<svg class="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Risk Radar &amp; Disqualification Traps</span>
+</div>
+<p class="text-xs text-amber-950 leading-relaxed">
+<strong>Automatic Disqualification:</strong> Dossiers exceeding the strictly enforced 20-page cap or submitted after May 31, 2026 (23:59 WIB) are discarded immediately without review or administrative appeal window.
+                </p>
+</div>
+<!-- UNKNOWN / UNVERIFIED INFORMATION (Muted slate callout) -->
+<div class="p-4 bg-slate-100 border border-slate-300 rounded-lg space-y-2">
+<div class="flex items-center space-x-2 text-slate-800 font-mono text-xs font-bold uppercase tracking-wider">
+<svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Unknown / Missing Details in Notice</span>
+</div>
+<p class="text-xs text-slate-700 leading-relaxed">
+                  Clarification required: Co-funding permission (matching funds) and the precise milestone transfer percentages (e.g. 70/30) are absent from circular text and require checking the internal university research bureau.
+                </p>
+</div>
+</div>
+<!-- NEXT ACTIONS DOSSIER (Numbered actionable checklist for immediate execution) -->
+<div class="bg-white border border-slate-300 rounded-lg p-4 space-y-3">
+<div class="flex items-center justify-between border-b border-slate-100 pb-2">
+<span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">Execution Plan (Next Steps for Proponents)</span>
+<span class="text-[11px] text-blue-700 font-bold font-mono">PRIORITIZED DOSSIER</span>
+</div>
+<div class="space-y-2 text-xs">
+<div class="flex items-start space-x-2.5 p-2 bg-slate-50 rounded border border-slate-200">
+<span class="w-5 h-5 rounded bg-blue-600 text-white font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">1</span>
+<div>
+<span class="font-semibold text-slate-900 block">Assemble Multidisciplinary Roster</span>
+<span class="text-slate-600">Confirm 3+ active undergraduate students spanning at least two different STEAM majors.</span>
+</div>
+</div>
+<div class="flex items-start space-x-2.5 p-2 bg-slate-50 rounded border border-slate-200">
+<span class="w-5 h-5 rounded bg-blue-600 text-white font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">2</span>
+<div>
+<span class="font-semibold text-slate-900 block">Draft 20-Page Strict Proposal &amp; Budget</span>
+<span class="text-slate-600">Ensure total budget ask does not exceed IDR 100,000,000 and total annexes do not exceed page limits.</span>
+</div>
+</div>
+<div class="flex items-start space-x-2.5 p-2 bg-slate-50 rounded border border-slate-200">
+<span class="w-5 h-5 rounded bg-blue-600 text-white font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">3</span>
+<div>
+<span class="font-semibold text-slate-900 block">Procure Dean Endorsement Letter Before May 20</span>
+<span class="text-slate-600">Mandatory signature and university stamp required prior to portal closing on May 31.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- ======================================================================= -->
+<!-- STATE 2: EMPTY STATE VIEW                                               -->
+<!-- ======================================================================= -->
+<div class="hidden w-full h-full overflow-y-auto p-10 flex items-center justify-center" id="state-empty-view">
+<div class="bg-white border border-slate-300 rounded-xl p-8 max-w-2xl w-full text-center space-y-6 shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mx-auto border border-blue-200">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div class="space-y-1">
+<h2 class="font-serif font-bold text-xl text-slate-900">Ingest New Announcement Corpus</h2>
+<p class="text-xs text-slate-500">Paste an official decree, PDF announcement text, or tender circular to generate a verified decision dossier.</p>
+</div>
+<div class="text-left space-y-2">
+<label class="block font-mono text-xs text-slate-700 uppercase font-semibold">Raw Announcement Text / Decree Circular</label>
+<textarea class="w-full text-xs font-mono p-3 rounded border border-slate-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600" placeholder="Paste full announcement or legal decree text here for SHA-256 anchoring and claim extraction..." rows="7"></textarea>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="text-[11px] font-mono text-slate-400">Zero data retention outside encrypted session</span>
+<button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-xs shadow-xs cursor-pointer" onclick="setSimulatedState('processing')">
+            Run Verification Pipeline →
+          </button>
+</div>
+</div>
+</div>
+<!-- ======================================================================= -->
+<!-- STATE 3: PROCESSING PIPELINE VIEW                                       -->
+<!-- ======================================================================= -->
+<div class="hidden w-full h-full overflow-y-auto p-10 flex items-center justify-center" id="state-processing-view">
+<div class="bg-white border border-slate-300 rounded-xl p-8 max-w-xl w-full text-center space-y-6 shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mx-auto border border-blue-200 animate-spin">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div class="space-y-1">
+<h2 class="font-serif font-bold text-xl text-slate-900">Executing Deep Evidence Audit Pipeline...</h2>
+<p class="text-xs text-slate-500 font-mono">Calibrating bi-directional quotes against source SHA-256 digest</p>
+</div>
+<!-- Pipeline Stages -->
+<div class="text-left space-y-2 max-w-md mx-auto text-xs font-mono">
+<div class="p-2.5 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded flex items-center justify-between">
+<span>[1/3] Ingestion &amp; Optical Character Normalization</span>
+<span class="font-bold">DONE (0.2s)</span>
+</div>
+<div class="p-2.5 bg-blue-50 text-blue-900 border border-blue-200 rounded flex items-center justify-between">
+<span class="flex items-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
+<span>[2/3] Operative Claim &amp; Deadline Extraction</span>
+</span>
+<span class="font-bold">IN PROGRESS...</span>
+</div>
+<div class="p-2.5 bg-slate-50 text-slate-400 border border-slate-200 rounded flex items-center justify-between">
+<span>[3/3] Bi-Directional Citation Mapping</span>
+<span>QUEUED</span>
+</div>
+</div>
+<button class="text-xs text-blue-600 hover:underline font-mono cursor-pointer" onclick="setSimulatedState('active')">
+          [Fast-forward to Completed Workspace]
+        </button>
+</div>
+</div>
+<!-- ======================================================================= -->
+<!-- STATE 4: ERROR / PAYWALL / SOURCE INACCESSIBLE STATE                     -->
+<!-- ======================================================================= -->
+<div class="hidden w-full h-full overflow-y-auto p-10 flex items-center justify-center" id="state-error-view">
+<div class="bg-white border border-rose-300 rounded-xl p-8 max-w-xl w-full text-center space-y-5 shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center mx-auto border border-rose-200">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div class="space-y-1">
+<h2 class="font-serif font-bold text-xl text-rose-950">Ingestion Blocked: Source Access Denied (HTTP 403)</h2>
+<p class="text-xs text-slate-600">The remote server moecrt.go.id enforced an institutional firewall barrier or CAPTCHA restriction preventing canonical hash generation.</p>
+</div>
+<div class="p-3 bg-rose-50 rounded border border-rose-200 text-left font-mono text-[11px] text-rose-900 space-y-1">
+<div>ERR_CODE: WAF_CHALLENGE_CAPTCHA</div>
+<div>REMOTE_URL: https://moecrt.go.id/nsig-2026/guidelines.pdf</div>
+<div>ACTION: Manual paste fallback recommended</div>
+</div>
+<div class="flex items-center justify-center space-x-3 pt-2">
+<button class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded font-medium text-xs cursor-pointer" onclick="setSimulatedState('empty')">
+            Paste Manual Text Instead
+          </button>
+<button class="px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded font-medium text-xs cursor-pointer" onclick="setSimulatedState('active')">
+            Return to Active Workspace
+          </button>
+</div>
+</div>
+</div>
+</main>
+<!-- ========================================================================= -->
+<!-- 5. AUDIT TRAIL SECONDARY DRAWER / MODAL (CLOSED BY DEFAULT)               -->
+<!-- ========================================================================= -->
+<div aria-labelledby="audit-modal-title" aria-modal="true" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-end hidden select-none" id="audit-modal" onclick="handleAuditBackdropClick(event)" role="dialog">
+<div class="bg-white border-l border-slate-300 w-full max-w-xl h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-200" onclick="event.stopPropagation()">
+<!-- Drawer Header -->
+<div class="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+<div>
+<div class="flex items-center space-x-2">
+<h3 class="font-mono font-bold text-sm text-slate-900 uppercase tracking-wider" id="audit-modal-title">
+              Riwayat Log Audit Bukti &amp; Verifikasi
+            </h3>
+<span class="text-[10px] font-mono px-1.5 py-0.2 bg-blue-100 text-blue-900 rounded font-semibold">[Simulasi]</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">Jejak rantai validasi semantik berbasis hash &amp; kutipan verbatim</p>
+</div>
+<button aria-label="Tutup drawer" class="text-slate-400 hover:text-slate-700 p-1.5 rounded hover:bg-slate-200 transition-colors" onclick="closeAuditModal()" type="button">
+          ✕
+        </button>
+</div>
+<!-- Filter Tabs -->
+<div class="px-4 py-2 bg-white border-b border-slate-200 flex items-center space-x-2 text-xs font-mono">
+<button class="px-2.5 py-1 bg-slate-900 text-white rounded font-medium">All Events (4)</button>
+<button class="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded">Verified (2)</button>
+<button class="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded">Flagged (1)</button>
+<button class="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded">Ingestion (1)</button>
+</div>
+<!-- Audit Items Stream -->
+<div class="flex-1 overflow-y-auto p-4 space-y-3 font-mono text-xs">
+<!-- Audit Item 1 -->
+<div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-bold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">[01] CITATION_VERIFIED</span>
+<span class="text-[11px] text-slate-400">15 Apr 2026 09:30:21</span>
+</div>
+<p class="font-sans text-xs text-slate-800">
+<strong>Claim:</strong> IDR 100,000,000 maximum grant allocation verified against #P3 Line 2. Match Confidence: 0.98.
+          </p>
+<div class="text-[10px] text-emerald-700 flex items-center space-x-1">
+<span>✓ Verified by semantic token locator [Data Demonstrasi / Simulasi]</span>
+</div>
+</div>
+<!-- Audit Item 2 -->
+<div class="p-3 bg-amber-50/60 border border-amber-200 rounded space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">[02] INCOMPLETE_TERM_FLAG</span>
+<span class="text-[11px] text-slate-400">15 Apr 2026 09:30:22</span>
+</div>
+<p class="font-sans text-xs text-amber-950">
+<strong>Warning:</strong> Disbursement tranches and co-funding rules are deferred to the external portal without inline terms.
+          </p>
+<div class="text-[10px] text-amber-800">
+            • Requires manual reviewer verification against institutional guidelines.
+          </div>
+</div>
+<!-- Audit Item 3 -->
+<div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300">HASH_PROOF_RECORDED</span>
+<span class="text-[11px] text-slate-400">15 Apr 2026 09:30:14</span>
+</div>
+<p class="font-sans text-xs text-slate-700">
+            SHA-256 digest generated: <code class="text-[11px] bg-white px-1 py-0.5 border border-slate-200">8f0b1a45...c712e9b0</code>
+</p>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs font-mono">
+<span class="text-slate-500">Immutable Audit Trail v3.1</span>
+<button class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded font-sans text-xs cursor-pointer" onclick="closeAuditModal()">
+          Tutup Riwayat Audit
+        </button>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- EXPORT DOSSIER MODAL DIALOG                                              -->
+<!-- ========================================================================= -->
+<div aria-modal="true" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 hidden select-none" id="export-modal" onclick="closeExportModal()" role="dialog">
+<div class="bg-white border border-slate-300 rounded-xl max-w-md w-full shadow-2xl p-6 space-y-4" onclick="event.stopPropagation()">
+<div class="flex items-start justify-between border-b border-slate-200 pb-3">
+<div>
+<h3 class="font-serif font-bold text-base text-slate-900">Export Verified Decision Dossier</h3>
+<p class="text-xs text-slate-500 mt-0.5">Generate formal PDF report including cryptographic verification proof</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 p-1" onclick="closeExportModal()">✕</button>
+</div>
+<div class="space-y-3 text-xs">
+<label class="block font-mono uppercase text-slate-700 font-semibold">Select Dossier Output</label>
+<div class="space-y-2">
+<label class="p-3 border border-blue-600 bg-blue-50/50 rounded flex items-center space-x-2.5 cursor-pointer">
+<input checked="" class="text-blue-600 focus:ring-blue-500" name="export-format" type="radio"/>
+<div>
+<span class="font-bold text-slate-900 block">PDF Executive Dossier (3-Page Report)</span>
+<span class="text-[11px] text-slate-500">With evidence citations, verbatim quotes &amp; decision timeline</span>
+</div>
+</label>
+<label class="p-3 border border-slate-200 hover:border-slate-300 rounded flex items-center space-x-2.5 cursor-pointer">
+<input class="text-blue-600 focus:ring-blue-500" name="export-format" type="radio"/>
+<div>
+<span class="font-bold text-slate-900 block">JSON Structured Intelligence Payload</span>
+<span class="text-[11px] text-slate-500">Machine-readable with SHA-256 anchoring timestamps</span>
+</div>
+</label>
+</div>
+</div>
+<div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-200">
+<button class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded cursor-pointer" onclick="closeExportModal()">Batal</button>
+<button class="px-4 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white font-medium rounded shadow-xs cursor-pointer" onclick="runExport(this)">Download Dossier (PDF)</button>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- JAVASCRIPT LOGIC (Interactive State Switcher & Citation Anchor Synch)     -->
+<!-- ========================================================================= -->
+<script>
+    /**
+     * Interactive Mode Switcher with real functional states
+     * Supports: active, empty, processing, error
+     */
+    function setSimulatedState(stateName) {
+      const views = ['active', 'empty', 'processing', 'error'];
+      views.forEach(v => {
+        const el = document.getElementById(`state-${v}-view`);
+        const btn = document.getElementById(`btn-state-${v}`);
+        if (el) el.classList.add('hidden');
+        if (btn) {
+          btn.className = "px-2 py-0.5 rounded font-medium text-slate-400 hover:text-white transition-all";
+        }
+      });
+
+      const targetView = document.getElementById(`state-${stateName}-view`);
+      const targetBtn = document.getElementById(`btn-state-${stateName}`);
+      
+      if (targetView) targetView.classList.remove('hidden');
+      if (targetBtn) {
+        targetBtn.className = "px-2 py-0.5 rounded font-semibold bg-blue-600 text-white transition-all";
+      }
+    }
+
+    /**
+     * Bi-directional Citation and Evidence Focus
+     * Clicking/hovering [01] or [02] scrolls and illuminates the corresponding anchor
+     */
+    function focusEvidence(id) {
+      const markEl = document.getElementById(`doc-citation-${id}`);
+      const cardEl = document.getElementById(`evidence-card-${id}`);
+
+      // Clear previous active states
+      document.querySelectorAll('.anchor-active-verbatim, .anchor-active-warning').forEach(el => {
+        el.classList.remove('anchor-active-verbatim', 'anchor-active-warning');
+      });
+      document.querySelectorAll('.evidence-card').forEach(el => {
+        el.classList.remove('ring-4', 'ring-blue-500/30', 'ring-amber-500/30');
+      });
+
+      const highlightClass = id === '01' ? 'anchor-active-verbatim' : 'anchor-active-warning';
+      const ringClass = id === '01' ? 'ring-blue-500/30' : 'ring-amber-500/30';
+
+      if (markEl) {
+        markEl.classList.add(highlightClass);
+        markEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      if (cardEl) {
+        cardEl.classList.add('ring-4', ringClass);
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Auto clear focus halo after 3.5s
+      setTimeout(() => {
+        if (markEl) markEl.classList.remove(highlightClass);
+        if (cardEl) cardEl.classList.remove('ring-4', ringClass);
+      }, 3500);
+    }
+
+    /**
+     * Copy raw document text
+     */
+    function copyDocumentRaw(btn) {
+      const docText = document.querySelector('#state-active-view [data-purpose="source-document-panel"]').innerText;
+      navigator.clipboard.writeText(docText).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="text-emerald-700 font-bold">✓ Dokumen Tersalin</span>';
+        setTimeout(() => { btn.innerHTML = orig; }, 1500);
+      });
+    }
+
+    /**
+     * Copy specific citation passage
+     */
+    function copySnippet(btn, quote) {
+      navigator.clipboard.writeText(quote).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="text-emerald-700 font-bold">✓ Copied</span>';
+        setTimeout(() => { btn.innerHTML = orig; }, 1200);
+      });
+    }
+
+    /**
+     * Re-analysis simulation
+     */
+    function triggerReanalysis() {
+      setSimulatedState('processing');
+      setTimeout(() => {
+        setSimulatedState('active');
+      }, 1200);
+    }
+
+    /**
+     * Audit Modal Drawer Controls
+     */
+    function openAuditModal() {
+      document.getElementById('audit-modal').classList.remove('hidden');
+    }
+    function closeAuditModal() {
+      document.getElementById('audit-modal').classList.add('hidden');
+    }
+    function handleAuditBackdropClick(e) {
+      if (e.target.id === 'audit-modal') closeAuditModal();
+    }
+
+    /**
+     * Export Modal Controls
+     */
+    function openExportModal() {
+      document.getElementById('export-modal').classList.remove('hidden');
+    }
+    function closeExportModal() {
+      document.getElementById('export-modal').classList.add('hidden');
+    }
+    function runExport(btn) {
+      btn.innerHTML = 'Compiling PDF Dossier...';
+      setTimeout(() => {
+        btn.innerHTML = '✓ Dossier Downloaded';
+        setTimeout(() => {
+          closeExportModal();
+          btn.innerHTML = 'Download Dossier (PDF)';
+        }, 800);
+      }, 900);
+    }
+
+    // Keyboard ESC listener
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAuditModal();
+        closeExportModal();
+      }
+    });
+  </script>
+</body></html>
