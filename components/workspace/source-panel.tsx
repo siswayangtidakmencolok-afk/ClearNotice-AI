@@ -8,8 +8,12 @@ import type { EvidenceAnchor } from "./types";
 type SourcePanelProps = {
   source: string;
   isDemo: boolean;
+  consentToOpenRouter: boolean;
+  onConsentToOpenRouterChange: (value: boolean) => void;
   isEditing: boolean;
   isLoading: boolean;
+  isExtracting: boolean;
+  uploadedFile: { name: string; type: string; size: number } | null;
   evidence: EvidenceAnchor[];
   activeEvidenceId: string | null;
   error: string | null;
@@ -18,6 +22,7 @@ type SourcePanelProps = {
   onLoadDemo: () => void;
   onClear: () => void;
   onAnalyze: () => void;
+  onUpload: (file: File) => Promise<void>;
   onEdit: () => void;
   onCopySource: () => void;
   onFocusEvidence: (id: string) => void;
@@ -30,8 +35,12 @@ const buttonClass =
 export function SourcePanel({
   source,
   isDemo,
+  consentToOpenRouter,
+  onConsentToOpenRouterChange,
   isEditing,
   isLoading,
+  isExtracting,
+  uploadedFile,
   evidence,
   activeEvidenceId,
   error,
@@ -40,6 +49,7 @@ export function SourcePanel({
   onLoadDemo,
   onClear,
   onAnalyze,
+  onUpload,
   onEdit,
   onCopySource,
   onFocusEvidence,
@@ -47,6 +57,7 @@ export function SourcePanel({
 }: SourcePanelProps) {
   const [query, setQuery] = useState("");
   const [annotated, setAnnotated] = useState(true);
+  const busy = isLoading || isExtracting;
   const paragraphs = source.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
   const visibleParagraphs = paragraphs
     .map((paragraph, index) => ({ paragraph, index }))
@@ -79,6 +90,10 @@ export function SourcePanel({
           <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-950">
             Fictional demo text
           </span>
+        ) : uploadedFile ? (
+          <span className="max-w-56 truncate rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700" title={uploadedFile.name}>
+            {uploadedFile.name}
+          </span>
         ) : source ? (
           <span className="rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700">
             User-provided text
@@ -95,7 +110,7 @@ export function SourcePanel({
             id="announcement-source"
             value={source}
             onChange={(event) => onChange(event.target.value)}
-            disabled={isLoading}
+            disabled={busy}
             rows={12}
             placeholder="Paste the full announcement here..."
             className="min-h-64 w-full resize-y rounded border border-[#d6d3c8] bg-white p-4 font-serif text-[15px] leading-7 text-slate-800 placeholder:font-sans placeholder:text-sm placeholder:text-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
@@ -104,15 +119,15 @@ export function SourcePanel({
             <button
               type="button"
               onClick={onAnalyze}
-              disabled={isLoading}
+              disabled={busy || source.length > 120000}
               className={`${buttonClass} border-blue-800 bg-blue-800 text-white hover:bg-blue-900 sm:px-5`}
             >
-              {isLoading ? "Preparing prototype brief..." : "Prepare prototype brief"}
+              {isLoading ? "Analyzing announcement..." : isDemo ? "Prepare sample brief" : "Analyze announcement"}
             </button>
             <button
               type="button"
               onClick={onLoadDemo}
-              disabled={isLoading}
+              disabled={busy}
               className={`${buttonClass} border-slate-300 bg-white text-slate-800 hover:bg-slate-100`}
             >
               Load fictional sample
@@ -121,20 +136,60 @@ export function SourcePanel({
               <button
                 type="button"
                 onClick={onClear}
-                disabled={isLoading}
+              disabled={busy}
                 className={`${buttonClass} border-transparent bg-transparent text-slate-700 hover:bg-slate-100`}
               >
                 Clear text
               </button>
             ) : null}
           </div>
+          <p className={`mt-2 text-xs ${source.length > 120000 ? "font-semibold text-rose-800" : "text-slate-600"}`} aria-live="polite">
+            {source.length.toLocaleString()} / 120,000 characters{source.length > 120000 ? " · Shorten the announcement before analyzing." : ""}
+          </p>
+          <div className="mt-3 border-t border-[#dfdcce] pt-3">
+            <label htmlFor="announcement-file" className="block text-xs font-semibold text-slate-700">
+              Upload a document
+              <span className="mt-1 block font-normal leading-5 text-slate-600">PDF, DOCX, or TXT · up to 4 MB. Text limit: 120,000 characters.</span>
+            </label>
+            <input
+              id="announcement-file"
+              type="file"
+              accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+              disabled={busy}
+              onChange={(event) => {
+                const file = event.currentTarget.files?.[0];
+                if (file) void onUpload(file);
+                event.currentTarget.value = "";
+              }}
+              className="mt-2 block min-h-11 w-full max-w-full text-sm text-slate-800 file:mr-3 file:min-h-11 file:rounded file:border file:border-slate-300 file:bg-white file:px-3 file:font-semibold file:text-slate-800 hover:file:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60"
+            />
+            {isExtracting ? <p className="mt-2 text-sm text-slate-700" role="status">Extracting text from document...</p> : null}
+            {uploadedFile ? (
+              <p className="mt-2 break-words text-xs leading-5 text-slate-600" role="status">
+                Extracted {uploadedFile.type} · {(uploadedFile.size / 1024).toFixed(0)} KB · {paragraphs.length} source paragraphs. Review the extracted text before analysis.
+              </p>
+            ) : null}
+          </div>
+          {!isDemo && source.trim() ? (
+            <label className="mt-3 flex items-start gap-2 rounded-md border border-slate-300 bg-white p-3 text-xs leading-5 text-slate-700">
+              <input
+                type="checkbox"
+                checked={consentToOpenRouter}
+                onChange={(event) => onConsentToOpenRouterChange(event.target.checked)}
+                className="mt-1 size-4 shrink-0 accent-emerald-800"
+              />
+              <span>I consent to send the full text of this notice to OpenRouter for analysis. ClearNotice only uses free OpenRouter models; availability and rate limits vary.</span>
+            </label>
+          ) : null}
           {error ? (
             <p className="mt-3 rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-900" role="alert">
               {error}
             </p>
           ) : null}
           <p className="mt-4 border-t border-[#dfdcce] pt-3 text-xs leading-5 text-slate-600">
-            This screen uses local keyword rules only. It does not call Gemini or verify claims.
+            {isDemo
+              ? "Fictional demonstration. It uses local keyword rules and does not contact an AI provider."
+              : "OpenRouter Free analyzes this notice after consent. The actual model is shown with the result. Source quotations are checked against this text; external verification is not performed."}
           </p>
         </div>
       ) : (

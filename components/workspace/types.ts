@@ -5,6 +5,7 @@ export type EvidenceAnchor = {
   paragraph: number;
   quote: string;
   status: Exclude<EvidenceStatus, "unknown">;
+  page?: number;
 };
 
 export type Finding = {
@@ -13,9 +14,25 @@ export type Finding = {
   detail: string;
   status: EvidenceStatus;
   evidenceId?: string;
+  kind?: "source-stated" | "interpretation" | "missing";
 };
 
 export type PrototypeAnalysis = {
+  provider?: "local-demo" | "gemini" | "openrouter";
+  modelId?: string;
+  fallbackFrom?: "gemini" | "openrouter";
+  fallbackReason?: string;
+  durationMs?: number;
+  overview?: {
+    subject: string;
+    category: string;
+    summary: string;
+    audience: string;
+    organizer?: Finding;
+    location?: Finding;
+  };
+  keyFacts?: Finding[];
+  nextSteps?: Finding[];
   announcementType: Finding;
   importantDates: Finding[];
   eligibility: Finding[];
