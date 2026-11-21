@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Analysis Brief | ClearNotice AI",
-  description: "Review a local prototype brief alongside its source-linked findings.",
+  description: "Review an announcement analysis alongside its source-linked findings.",
 };
 
 export default function AnalysisBriefRoute() {

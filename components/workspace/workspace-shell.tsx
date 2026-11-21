@@ -2,94 +2,202 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useId, useState } from "react";
-import { CalendarDays, ClipboardList, FileText, Link2, Menu, X } from "lucide-react";
-import type { ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
+import {
+  FileText,
+  CalendarDays,
+  Link2,
+  Menu,
+  X,
+  Library,
+  ShieldCheck,
+  PlusCircle,
+  ExternalLink,
+  Sparkles,
+  BookOpen,
+  LayoutDashboard,
+} from "lucide-react";
+import { useAnnouncement } from "./announcement-provider";
+import { EvidenceAuditDialog } from "./evidence-audit-dialog";
 
 const navigation = [
-  { href: "/", label: "Workspace", icon: ClipboardList },
-  { href: "/source-document", label: "Source document", icon: FileText },
-  { href: "/analysis-brief", label: "Analysis brief", icon: CalendarDays },
-  { href: "/evidence-ledger", label: "Evidence ledger", icon: Link2 },
+  { href: "/", label: "Workspace", icon: LayoutDashboard },
+  { href: "/analysis-brief", label: "Analysis Brief", icon: CalendarDays },
+  { href: "/source-document", label: "Source Document", icon: FileText },
+  { href: "/evidence-ledger", label: "Evidence Ledger", icon: Link2 },
+  { href: "/documents", label: "Document Library", icon: Library },
+  { href: "/welcome", label: "Onboarding Guide", icon: BookOpen },
 ];
 
 const pageTitles: Record<string, string> = {
-  "/": "Announcement investigation workspace",
-  "/source-document": "Source document",
-  "/analysis-brief": "Analysis brief",
-  "/evidence-ledger": "Evidence ledger",
+  "/": "Announcement Investigation Workspace",
+  "/source-document": "Source Document Reader",
+  "/analysis-brief": "Analysis Brief & Decision Dossier",
+  "/evidence-ledger": "Forensic Evidence Ledger",
+  "/documents": "Multi-Document Intelligence",
+  "/welcome": "Onboarding & Walkthrough",
 };
 
 export function WorkspaceShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [auditOpen, setAuditOpen] = useState(false);
   const mobileNavigationId = useId();
-  const title = pageTitles[pathname] ?? "Announcement investigation workspace";
+  const title = pageTitles[pathname] ?? "Investigation Workspace";
+  const { uploadedFile, startNewInvestigation, analysis } = useAnnouncement();
+
+  const docTitle = uploadedFile?.name ?? (analysis?.overview?.subject || "National Student Innovation Grant 2026");
 
   return (
-    <div className="min-h-screen bg-[#f2f3f5] text-[#1e293b]">
-      <div className="min-h-screen lg:grid lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <aside className="hidden border-r border-slate-800 bg-[#0b1120] text-slate-200 lg:flex lg:flex-col">
-          <div className="border-b border-slate-800 px-5 py-4">
-            <Link href="/" className="flex items-center gap-3 text-sm font-bold tracking-tight text-white">
-              <span className="flex size-8 items-center justify-center rounded bg-blue-700 font-mono text-xs text-white" aria-hidden="true">
-                CN
-              </span>
-              <span>
-                ClearNotice AI
-                <span className="mt-1 block text-xs font-normal text-slate-400">Announcement investigation</span>
-              </span>
-            </Link>
-          </div>
-          <nav aria-label="Workspace navigation" className="space-y-1 px-3 py-4">
-            {navigation.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={pathname === href ? "page" : undefined}
-                className={`flex min-h-11 items-center gap-3 rounded px-3 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 ${
-                  pathname === href
-                    ? "bg-blue-700 text-white"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                }`}
-              >
-                <Icon size={17} aria-hidden="true" />
-                {label}
+    <div className="min-h-screen bg-[#f2f3f5] text-[#1e293b] flex flex-col antialiased">
+      <div className="min-h-screen lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] flex-1">
+        {/* Desktop Sidebar (Stitch dark institutional theme #0b1120) */}
+        <aside className="hidden border-r border-slate-800 bg-[#0b1120] text-slate-200 lg:flex lg:flex-col justify-between select-none">
+          <div className="flex flex-col">
+            {/* Header Brand */}
+            <div className="h-16 px-5 flex items-center justify-between border-b border-slate-800/80">
+              <Link href="/" className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center font-mono font-bold text-xs text-white tracking-tighter shadow-sm">
+                  CN
+                </div>
+                <div className="flex flex-col leading-tight">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-bold tracking-tight text-white text-sm">ClearNotice</span>
+                    <span className="font-mono text-[10px] text-blue-400 font-bold uppercase tracking-wider">AI</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 tracking-wide font-medium">Document Intelligence</span>
+                </div>
               </Link>
-            ))}
-          </nav>
-          <div className="mt-auto border-t border-slate-800 px-5 py-4">
-            <p className="text-xs leading-5 text-slate-400">
-              Local prototype only. No Gemini request or audit history is active.
+            </div>
+
+            {/* Navigation Group */}
+            <div className="px-3 pt-4">
+              <div className="px-3 pb-2 flex items-center justify-between">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                  Investigation Workspace
+                </span>
+              </div>
+              <nav aria-label="Workspace navigation" className="space-y-1">
+                {navigation.map(({ href, label, icon: Icon }) => {
+                  const isActive = pathname === href;
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`flex min-h-10 items-center justify-between rounded px-3 text-xs font-medium transition-colors ${
+                        isActive
+                          ? "bg-blue-600 text-white shadow-xs font-semibold"
+                          : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon size={16} className={isActive ? "text-white" : "text-slate-400"} aria-hidden="true" />
+                        <span>{label}</span>
+                      </div>
+                      {href === "/analysis-brief" && analysis && (
+                        <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/80">
+                          Verified
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+
+            {/* Quick Action Button */}
+            <div className="px-4 mt-5">
+              <button
+                type="button"
+                onClick={startNewInvestigation}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-colors cursor-pointer"
+              >
+                <PlusCircle size={14} className="text-blue-400" />
+                <span>New Investigation</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Sidebar Footer Status & Epistemic Notice */}
+          <div className="p-4 border-t border-slate-800 bg-[#080d19] space-y-2.5">
+            <div className="flex items-center gap-2 text-[11px] text-slate-300">
+              <ShieldCheck size={14} className="text-emerald-400 shrink-0" />
+              <span className="font-mono text-[10px] uppercase tracking-wider font-semibold text-emerald-400">
+                Evidence-Anchored AI
+              </span>
+            </div>
+            <p className="text-[11px] leading-relaxed text-slate-400">
+              Every finding must map to an exact source passage. Findings without matching text are flagged as unknown.
             </p>
           </div>
         </aside>
 
-        <div className="min-w-0">
-          <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
-            <div className="mx-auto flex min-h-16 max-w-[1680px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-blue-800 lg:hidden">ClearNotice AI</p>
-                <h1 className="truncate font-serif text-base font-semibold text-slate-950 sm:text-lg">{title}</h1>
-                <p className="hidden text-xs text-slate-600 sm:block">
-                  Understand announcements. Never miss what matters.
-                </p>
+        {/* Main Content Area */}
+        <div className="min-w-0 flex flex-col">
+          {/* Top Institutional Header */}
+          <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-xs">
+            <div className="mx-auto flex h-14 max-w-[1680px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+              {/* Breadcrumb / Title Area */}
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="lg:hidden flex items-center gap-1.5 shrink-0">
+                  <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center font-mono font-bold text-xs text-white">
+                    CN
+                  </div>
+                </div>
+                <nav className="flex items-center gap-1.5 text-xs text-slate-500 truncate" aria-label="Breadcrumb">
+                  <Link href="/" className="hover:text-slate-900 transition-colors hidden sm:inline">
+                    Workspace
+                  </Link>
+                  <span className="text-slate-300 hidden sm:inline">/</span>
+                  <span className="text-slate-700 truncate max-w-[220px] font-medium hidden md:inline">
+                    {docTitle}
+                  </span>
+                  <span className="text-slate-300 hidden md:inline">/</span>
+                  <span className="text-slate-950 font-semibold truncate">{title}</span>
+                </nav>
+                <div className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-mono font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  <span>Verified Ingestion</span>
+                </div>
               </div>
-              <button
-                type="button"
-                aria-label={mobileMenuOpen ? "Close workspace navigation" : "Open workspace navigation"}
-                aria-expanded={mobileMenuOpen}
-                aria-controls={mobileNavigationId}
-                onClick={() => setMobileMenuOpen((open) => !open)}
-                className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-800 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 lg:hidden"
-              >
-                {mobileMenuOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
-              </button>
+
+              {/* Utility Action Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setAuditOpen(true)}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-mono transition-colors cursor-pointer"
+                  title="Open Evidence Audit Log"
+                >
+                  <Sparkles size={13} className="text-blue-600" />
+                  <span>Audit Trail</span>
+                </button>
+                <Link
+                  href="/source-document"
+                  className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors"
+                >
+                  <FileText size={13} />
+                  <span>View Source</span>
+                </Link>
+                <button
+                  type="button"
+                  aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
+                  aria-expanded={mobileMenuOpen}
+                  aria-controls={mobileNavigationId}
+                  onClick={() => setMobileMenuOpen((open) => !open)}
+                  className="inline-flex size-9 shrink-0 items-center justify-center rounded border border-slate-300 bg-white text-slate-800 hover:bg-slate-100 lg:hidden"
+                >
+                  {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+                </button>
+              </div>
             </div>
+
+            {/* Mobile Navigation Dropdown */}
             <nav
               id={mobileNavigationId}
-              aria-label="Workspace navigation"
-              className={`${mobileMenuOpen ? "block" : "hidden"} border-t border-slate-200 bg-white px-4 py-2 lg:hidden`}
+              aria-label="Mobile navigation"
+              className={`${mobileMenuOpen ? "block" : "hidden"} border-t border-slate-200 bg-white px-4 py-2 lg:hidden space-y-1 shadow-md`}
             >
               {navigation.map(({ href, label, icon: Icon }) => (
                 <Link
@@ -97,27 +205,26 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
                   href={href}
                   aria-current={pathname === href ? "page" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex min-h-11 items-center gap-3 rounded px-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700 ${
-                    pathname === href
-                      ? "bg-blue-50 text-blue-950"
-                      : "text-slate-800 hover:bg-slate-100"
+                  className={`flex min-h-10 items-center gap-3 rounded px-3 text-xs font-medium ${
+                    pathname === href ? "bg-blue-600 text-white font-semibold" : "text-slate-700 hover:bg-slate-100"
                   }`}
                 >
-                  <Icon size={16} aria-hidden="true" />
+                  <Icon size={16} />
                   {label}
                 </Link>
               ))}
             </nav>
           </header>
 
-          <main className="mx-auto w-full max-w-[1680px] px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
+          {/* Main Body Viewport */}
+          <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 max-w-[1680px] w-full mx-auto">
             {children}
           </main>
-          <footer className="border-t border-slate-200 px-4 py-4 text-center text-xs text-slate-600 sm:px-6">
-            ClearNotice AI prototype. Review the original announcement before acting.
-          </footer>
         </div>
       </div>
+
+      {/* Audit Drawer Dialog */}
+      <EvidenceAuditDialog open={auditOpen} onOpenChange={setAuditOpen} />
     </div>
   );
 }

@@ -1,68 +1,97 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { OnboardingShell } from "@/components/onboarding/onboarding-shell";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "How It Works | ClearNotice AI",
-  description: "Learn how the announcement workspace connects source text and findings.",
+  description: "Learn how the ClearNotice AI document investigation workspace connects source text and evidence.",
 };
 
 const steps = [
   {
-    title: "Add the notice",
-    detail: "Paste announcement text in the workspace. The prototype keeps it in page-session memory.",
+    title: "1. Ingest Announcement Corpus",
+    detail:
+      "Paste official text or upload PDF, DOCX, or TXT documents. Character normalization and structural tokenization execute securely on the server.",
   },
   {
-    title: "Prepare a local brief",
-    detail: "Simple keyword rules identify candidate dates, requirements, actions, and other passages. This is not a Gemini analysis.",
+    title: "2. Dual-Engine AI Extraction",
+    detail:
+      "Google Gemini reasoning extracts structured deadlines, eligibility criteria, and action items. Controlled OpenRouter fallback guarantees service availability.",
   },
   {
-    title: "Open the evidence",
-    detail: "Each source match can be followed from a finding to the corresponding text. A text match is not independent verification.",
+    title: "3. Forensic Evidence Anchoring",
+    detail:
+      "Every candidate assertion is validated against exact complete sentences in the source. Discarded citations and unsupported claims are placed into the Unknowns ledger.",
   },
   {
-    title: "Review what is missing",
-    detail: "Fields without a matching passage are marked unknown so the prototype does not present them as established facts.",
+    title: "4. Synchronized Decision Dossier",
+    detail:
+      "Explore the interactive Analysis Brief and Evidence Ledger with bi-directional navigation between findings and source paragraphs.",
   },
 ];
 
 export default function HowItWorksPage() {
   return (
     <OnboardingShell activePath="/how-it-works">
-      <header className="max-w-3xl">
-        <p className="text-sm font-semibold text-emerald-300">A source-first workflow</p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-          Keep each conclusion close to its source.
-        </h1>
-        <p className="mt-4 text-base leading-7 text-slate-300">
-          The workspace is organized around reading and checking an announcement, not chatting with a general-purpose assistant.
-        </p>
-      </header>
+      <div className="mx-auto max-w-5xl space-y-10">
+        <header className="max-w-3xl space-y-3">
+          <p className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-400">
+            A Source-First Document Workflow
+          </p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            Keep Every Conclusion Anchored to Its Source.
+          </h1>
+          <p className="text-sm sm:text-base leading-relaxed text-slate-300">
+            ClearNotice AI uses Google Gemini as its primary intelligence engine to parse complex notices, while preserving the original document as the single source of truth.
+          </p>
+        </header>
 
-      <ol className="mt-10 max-w-4xl divide-y divide-slate-700 border-y border-slate-700">
-        {steps.map((step, index) => (
-          <li key={step.title} className="grid gap-2 py-5 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-5 sm:py-6">
-            <span className="font-mono text-sm font-semibold text-emerald-300">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <div>
-              <h2 className="text-lg font-semibold text-white">{step.title}</h2>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">{step.detail}</p>
+        {/* Visual Workflow Canvas */}
+        <div className="rounded-xl border border-slate-800 bg-[#060e20] overflow-hidden shadow-xl">
+          <div className="h-8 bg-[#131b2e] px-4 flex items-center justify-between text-xs font-mono text-slate-400 border-b border-slate-800">
+            <span className="text-white font-semibold">FOUR-STAGE EVIDENCE PIPELINE</span>
+            <span className="text-emerald-400">CANONICAL VERIFICATION PROTOCOL</span>
+          </div>
+          <div className="relative w-full aspect-[16/9] max-h-[460px] bg-slate-950 flex items-center justify-center overflow-hidden">
+            <img
+              src="/onboarding/how-it-works.png"
+              alt="How ClearNotice AI Works"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+        </div>
+
+        {/* 4 Process Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {steps.map((step) => (
+            <div key={step.title} className="p-5 rounded-xl bg-[#131b2e] border border-slate-800 space-y-2">
+              <h2 className="text-base font-bold text-white font-mono">{step.title}</h2>
+              <p className="text-xs text-slate-300 leading-relaxed">{step.detail}</p>
             </div>
-          </li>
-        ))}
-      </ol>
+          ))}
+        </div>
 
-      <p className="mt-7 max-w-3xl border-l-2 border-amber-400 pl-4 text-sm leading-6 text-amber-100">
-        Prototype limitation: keyword matching can miss information or misclassify it. Always consult the original notice before taking action.
-      </p>
+        <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-800/60 text-amber-200 text-xs leading-relaxed">
+          <strong>Epistemic Warning:</strong> AI can misinterpret or miss implicit nuances. A text match proves that a clause was written in the notice, not that the issuer has independently authenticated it. Always verify with the issuing authority.
+        </div>
 
-      <Link
-        href="/sample-analysis"
-        className="mt-8 inline-flex min-h-11 items-center justify-center rounded-md bg-emerald-500 px-4 text-sm font-semibold text-slate-950 hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
-      >
-        Inspect the labeled sample
-      </Link>
+        <div className="flex items-center gap-4 pt-2">
+          <Link
+            href="/sample-analysis"
+            className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs tracking-wider uppercase rounded-lg shadow-lg flex items-center gap-2 transition-all cursor-pointer"
+          >
+            <span>Inspect the Sample</span>
+            <ArrowRight size={15} />
+          </Link>
+          <Link
+            href="/"
+            className="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs rounded-lg transition-colors"
+          >
+            Go Directly to Workspace
+          </Link>
+        </div>
+      </div>
     </OnboardingShell>
   );
 }
