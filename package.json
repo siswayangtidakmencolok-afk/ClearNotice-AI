@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-transform-types --import ./tests/ts-resolve-hooks.mjs --test tests/*.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

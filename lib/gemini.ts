@@ -2,6 +2,7 @@ import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import * as Sentry from "@sentry/nextjs";
 import { geminiAnalysisJsonSchema, geminiAnalysisSchema, type GeminiAnalysis } from "@/lib/analysis-schema";
 import { parseJsonText, validateJsonSchema } from "./ai/response-validation";
+import { EXTENDED_FIELD_RULES } from "./ai/analysis-instructions";
 
 const DEFAULT_MODEL = "gemini-3.8-flash";
 const REQUEST_TIMEOUT_MS = 35_000;
@@ -139,6 +140,7 @@ export async function analyzeWithGemini(source: string, requestId: string, timeo
             "For overview.organizer and overview.location, provide a concise detail and one exact complete source sentence when stated. If not stated, use detail 'Not stated in the source.' and an empty sourceQuote.",
             "Use 'Not stated in the source.' for an unavailable audience or other requested detail; never infer an organizer, participant group, fee, location, or action.",
             "Keep descriptions concise, distinguish explicit statements from interpretations, and use the notice's language for originalWording.",
+            EXTENDED_FIELD_RULES,
           ].join(" "),
           responseMimeType: "application/json",
           responseJsonSchema: geminiAnalysisJsonSchema,

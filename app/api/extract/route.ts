@@ -5,6 +5,7 @@ import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf.mj
 import { NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { withApiRequest } from "@/lib/sentry-api";
+import { pdfPageParagraphs } from "@/lib/documents/pdf-paragraphs";
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024;
 const MIN_PDF_TEXT_CHARS = 40;
@@ -17,10 +18,6 @@ const MIME_BY_EXTENSION: Record<string, string[]> = {
   docx: ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
   txt: ["text/plain"],
 };
-
-function normalizePageText(value: string) {
-  return value.split(/\r?\n/).map((line) => line.replace(/\s+/g, " ").trim()).filter(Boolean).join(" ").trim();
-}
 
 async function extractRequest(request: Request) {
   let formData: FormData;
@@ -52,12 +49,10 @@ async function extractRequest(request: Request) {
       for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
         const page = await pdf.getPage(pageNumber);
         const content = await page.getTextContent();
-        const pageText = normalizePageText(content.items
-          .filter((item) => "str" in item)
-          .map((item) => ("str" in item ? item.str : ""))
-          .join(" "));
-        if (pageText) {
-          paragraphs.push(pageText);
+        // Keep paragraph structure inside each page so evidence quotes map to a paragraph and page.
+        const pageParagraphs = pdfPageParagraphs(content.items.filter((item) => "str" in item));
+        for (const paragraph of pageParagraphs) {
+          paragraphs.push(paragraph);
           paragraphPages.push(pageNumber);
         }
       }

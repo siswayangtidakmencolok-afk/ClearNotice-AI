@@ -1,12 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from "react";
 import {
   canonicalNsigAnnouncement,
   canonicalNsigAnalysis,
   analyzePrototype,
 } from "./demo-analysis";
 import type { PrototypeAnalysis } from "./types";
+import { readJsonResponse } from "@/lib/read-json-response";
 
 const STORAGE_KEY = "clearnotice_investigation_state_v2";
 
@@ -56,6 +57,13 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
   const [activeEvidenceId, setActiveEvidenceId] = useState<string | null>("E01");
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
+  // Incremented whenever the document changes, so an analysis that finishes after the user switched
+  // documents is discarded instead of being shown against the wrong source.
+  const documentRunRef = useRef(0);
+  const invalidatePendingAnalysis = () => {
+    documentRunRef.current += 1;
+    setIsLoading(false);
+  };
 
   // Restore investigation from localStorage on initial mount
   useEffect(() => {
@@ -98,6 +106,7 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
   }, [source, paragraphPages, uploadedFile, isDemo, analysis, isEditing, isHydrated]);
 
   const changeSource = (value: string) => {
+    invalidatePendingAnalysis();
     setSource(value);
     setParagraphPages([]);
     setUploadedFile(null);
@@ -109,6 +118,7 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
   };
 
   const loadCanonicalDemo = () => {
+    invalidatePendingAnalysis();
     setSource(canonicalNsigAnnouncement);
     setParagraphPages([]);
     setUploadedFile({
@@ -133,6 +143,7 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
   };
 
   const startNewInvestigation = () => {
+    invalidatePendingAnalysis();
     setSource("");
     setParagraphPages([]);
     setUploadedFile(null);
@@ -172,6 +183,12 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const run = ++documentRunRef.current;
+    const isCurrentRun = () => run === documentRunRef.current;
+    // Clear the previous result so a failed re-run shows its error instead of stale findings.
+    setAnalysis(null);
+    setActiveEvidenceId(null);
+
     try {
       const response = await fetch("/api/analyze", {
         method: "POST",
@@ -185,23 +202,23 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
         signal: AbortSignal.timeout(60_000),
       });
 
-      const payload = (await response.json()) as {
+      const payload = await readJsonResponse<{
         analysis?: PrototypeAnalysis;
         provider?: "gemini" | "openrouter";
         modelId?: string;
         fallbackFrom?: "gemini" | "openrouter";
         fallbackReason?: string;
-        error?: string;
-      };
+      }>(response, "Analysis failed. Please retry.");
 
-      if (!response.ok || !payload.analysis) {
-        throw new Error(payload.error || "Analysis failed. Please retry.");
+      if (!payload.analysis) {
+        throw new Error("The server response did not include an analysis. Please retry.");
       }
+      if (!isCurrentRun()) return;
 
       setAnalysis(payload.analysis);
       setIsEditing(false);
     } catch (caughtError) {
-      // In case of recoverable error, offer local fallback analysis or display error
+      if (!isCurrentRun()) return;
       console.error("[prepareBrief error]", caughtError);
       const message = caughtError instanceof Error
         ? caughtError.name === "TimeoutError" || caughtError.name === "AbortError"
@@ -210,11 +227,12 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
         : "The announcement could not be analyzed. Please try again.";
       setError(message);
     } finally {
-      setIsLoading(false);
+      if (isCurrentRun()) setIsLoading(false);
     }
   };
 
   const uploadDocument = async (file: File) => {
+    invalidatePendingAnalysis();
     setIsExtracting(true);
     setError(null);
     setAnalysis(null);
@@ -223,16 +241,15 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
     formData.set("file", file);
     try {
       const response = await fetch("/api/extract", { method: "POST", body: formData });
-      const payload = (await response.json()) as {
+      const payload = await readJsonResponse<{
         source?: string;
         paragraphPages?: Array<number | null>;
         fileName?: string;
         fileType?: string;
         fileSize?: number;
-        error?: string;
-      };
-      if (!response.ok || !payload.source || !payload.fileName || !payload.fileType || !payload.fileSize) {
-        throw new Error(payload.error || "Document extraction failed. Please try again.");
+      }>(response, "Document extraction failed. Please try again.");
+      if (!payload.source || !payload.fileName || !payload.fileType || !payload.fileSize) {
+        throw new Error("Document extraction returned an incomplete result. Please try again.");
       }
       setSource(payload.source);
       setParagraphPages(payload.paragraphPages ?? []);
