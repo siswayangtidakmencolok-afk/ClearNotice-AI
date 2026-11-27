@@ -21,6 +21,36 @@ import {
 import { useAnnouncement } from "./announcement-provider";
 import { EvidenceAuditDialog } from "./evidence-audit-dialog";
 import { WorkspaceShell } from "./workspace-shell";
+import { LiveDossier } from "./live-dossier";
+import type { EvidenceAnchor } from "./types";
+
+/** Wraps each evidence quote found in a paragraph in a clickable <mark> anchored as doc-cite-<id>. */
+function HighlightedParagraph({ text, anchors, activeEvidenceId, onSelect }: { text: string; anchors: EvidenceAnchor[]; activeEvidenceId: string | null; onSelect: (id: string) => void }) {
+  const spans = anchors
+    .map((anchor) => ({ anchor, start: text.indexOf(anchor.quote) }))
+    .filter((span) => span.start >= 0)
+    .sort((a, b) => a.start - b.start);
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
+  for (const { anchor, start } of spans) {
+    if (start < cursor) continue;
+    if (start > cursor) parts.push(text.slice(cursor, start));
+    const verified = anchor.status === "supported";
+    parts.push(
+      <mark
+        key={anchor.id}
+        id={`doc-cite-${anchor.id}`}
+        onClick={() => onSelect(anchor.id)}
+        className={`cursor-pointer px-1 rounded transition-colors ${verified ? "bg-blue-100/90 text-blue-950 border-b-2 border-blue-600 hover:bg-blue-200" : "bg-amber-50 text-amber-950 border-b border-dashed border-amber-600 hover:bg-amber-100"} ${activeEvidenceId === anchor.id ? "ring-2 ring-blue-500/40" : ""}`}
+      >
+        {anchor.quote}
+      </mark>,
+    );
+    cursor = start + anchor.quote.length;
+  }
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return <p>{parts}</p>;
+}
 
 export function AnnouncementWorkspace() {
   const {
@@ -98,17 +128,21 @@ export function AnnouncementWorkspace() {
             <div className="flex items-center gap-1.5 text-slate-200">
               <FileText size={14} className="text-blue-400 shrink-0" />
               <span className="font-bold text-white tracking-normal truncate max-w-[260px]">
-                {uploadedFile?.name || "NSIG_2026_Announcement_Official_MoECRT.pdf"}
+                {uploadedFile?.name || (isDemo ? "NSIG_2026_Announcement_Official_MoECRT.pdf" : "Pasted announcement")}
               </span>
             </div>
-            <span className="text-slate-600 hidden md:inline">|</span>
-            <div className="hidden md:inline text-slate-400">
-              SHA-256: <span className="text-slate-300">8f0b1a45...c712e9b0</span>
-            </div>
-            <span className="text-slate-600 hidden lg:inline">|</span>
-            <div className="hidden lg:inline text-slate-400">
-              Ingested: <span className="text-slate-300">2026-04-15 09:30 WIB</span>
-            </div>
+            {isDemo && (
+              <>
+                <span className="text-slate-600 hidden md:inline">|</span>
+                <div className="hidden md:inline text-slate-400">
+                  SHA-256: <span className="text-slate-300">8f0b1a45...c712e9b0</span>
+                </div>
+                <span className="text-slate-600 hidden lg:inline">|</span>
+                <div className="hidden lg:inline text-slate-400">
+                  Ingested: <span className="text-slate-300">2026-04-15 09:30 WIB</span>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -159,7 +193,7 @@ export function AnnouncementWorkspace() {
                   <div className="p-2.5 bg-blue-50 text-blue-900 border border-blue-200 rounded flex items-center justify-between">
                     <span className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
-                      <span>[2/3] Gemini Reasoning & Extraction</span>
+                      <span>[2/3] AI Reasoning & Extraction</span>
                     </span>
                     <span className="font-bold">IN PROGRESS</span>
                   </div>
@@ -173,7 +207,7 @@ export function AnnouncementWorkspace() {
           )}
 
           {/* STATE: EMPTY / INGEST INPUT */}
-          {(!analysis || !source.trim()) && !isLoading ? (
+          {!analysis || !source.trim() ? (
             <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex items-center justify-center bg-[#f7f9fb]">
               <div className="bg-white border border-slate-300 rounded-xl p-6 sm:p-8 max-w-2xl w-full text-center space-y-6 shadow-sm">
                 <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mx-auto border border-blue-200">
@@ -273,19 +307,25 @@ export function AnnouncementWorkspace() {
                       <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
                       <span>Canonical Ingested Source Document</span>
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 font-semibold">
-                      SHA-256 Verified
-                    </span>
+                    {isDemo && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 font-semibold">
+                        SHA-256 Verified
+                      </span>
+                    )}
                   </div>
                   <h1 className="font-serif font-bold text-base text-slate-900 leading-snug">
-                    {analysis?.overview?.subject || "National Student Innovation Grant (NSIG) 2026"}
+                    {analysis?.overview?.subject || (isDemo ? "National Student Innovation Grant (NSIG) 2026" : uploadedFile?.name || "Announcement")}
                   </h1>
                   <div className="flex items-center gap-2 text-xs text-slate-600 font-serif italic flex-wrap">
-                    <span>Authority: {analysis?.overview?.organizer?.detail || "MoECRT Indonesia"}</span>
-                    <span>•</span>
-                    <span className="font-mono text-[11px] not-italic text-slate-500">
-                      DocID: ID-MOECRT-2026-NSIG-01
-                    </span>
+                    <span>Authority: {analysis?.overview?.organizer?.detail || (isDemo ? "MoECRT Indonesia" : "Not stated in the source.")}</span>
+                    {isDemo && (
+                      <>
+                        <span>•</span>
+                        <span className="font-mono text-[11px] not-italic text-slate-500">
+                          DocID: ID-MOECRT-2026-NSIG-01
+                        </span>
+                      </>
+                    )}
                   </div>
 
                   {/* Document Jump Pills */}
@@ -323,15 +363,19 @@ export function AnnouncementWorkspace() {
                 {/* Document Body Reader (Warm Paper Editorial Feel) */}
                 <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 font-serif text-[14px] leading-[1.8] text-[#292f3b] bg-[#fbfaf6]">
                   {/* Circular Notice Stamp */}
-                  <div className="border-y border-[#e3dfd0] py-1.5 flex items-center justify-between text-[11px] font-mono text-slate-500 select-none">
-                    <span>DIRECTORATE GENERAL OF HIGHER EDUCATION</span>
-                    <span>CIRCULAR NO. 0418/E2/DT.01/2026</span>
-                  </div>
+                  {isDemo && (
+                    <div className="border-y border-[#e3dfd0] py-1.5 flex items-center justify-between text-[11px] font-mono text-slate-500 select-none">
+                      <span>DIRECTORATE GENERAL OF HIGHER EDUCATION</span>
+                      <span>CIRCULAR NO. 0418/E2/DT.01/2026</span>
+                    </div>
+                  )}
 
                   {/* Render Paragraphs with anchors */}
-                  {source.split(/\n\s*\n/).map((para, idx) => {
+                  {/* Same paragraph numbering as the server-side evidence mapping (empty blocks dropped). */}
+                  {source.split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para, idx) => {
                     const pNum = idx + 1;
-                    const isPara3 = pNum === 3;
+                    // The annotated paragraph 3 below is hand-written demo content; real documents render their own text.
+                    const isPara3 = isDemo && pNum === 3;
                     return (
                       <div
                         key={idx}
@@ -339,7 +383,7 @@ export function AnnouncementWorkspace() {
                         className={`relative group pl-7 border-l-2 transition-all ${
                           isPara3
                             ? "border-blue-500 bg-[#f4f7fc]/70 p-3.5 rounded-r-lg"
-                            : pNum === 4
+                            : isDemo && pNum === 4
                               ? "border-rose-400 bg-rose-50/40 p-3.5 rounded-r-lg text-rose-950"
                               : "border-transparent hover:border-slate-300"
                         }`}
@@ -384,7 +428,16 @@ export function AnnouncementWorkspace() {
                             </p>
                           </div>
                         ) : (
-                          <p>{para}</p>
+                          isDemo ? (
+                            <p>{para}</p>
+                          ) : (
+                            <HighlightedParagraph
+                              text={para.trim()}
+                              anchors={analysis.evidence.filter((anchor) => anchor.paragraph === pNum)}
+                              activeEvidenceId={activeEvidenceId}
+                              onSelect={setActiveEvidenceId}
+                            />
+                          )
                         )}
                       </div>
                     );
@@ -425,12 +478,15 @@ export function AnnouncementWorkspace() {
                     {providerBadge()}
                     <span className="text-[11px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded font-semibold flex items-center gap-1">
                       <CheckCircle size={12} className="text-emerald-600" />
-                      <span>98% Semantic Fit</span>
+                      <span>{isDemo ? "98% Semantic Fit" : `${analysis.evidence.length} quotes found in source`}</span>
                     </span>
                   </div>
                 </div>
 
-                {/* Scrollable Intelligence Dashboard */}
+                {/* Scrollable Intelligence Dashboard: real results for loaded documents, static dossier only for the demo */}
+                {!isDemo ? (
+                  <LiveDossier analysis={analysis} activeEvidenceId={activeEvidenceId} onJump={setActiveEvidenceId} />
+                ) : (
                 <div className="p-6 space-y-6 max-w-4xl mx-auto w-full">
                   {/* ================================================================= */}
                   {/* EVIDENCE LEDGER CITATION CARDS                                    */}
@@ -658,6 +714,7 @@ export function AnnouncementWorkspace() {
                     </div>
                   </div>
                 </div>
+                )}
               </section>
             </div>
           )}

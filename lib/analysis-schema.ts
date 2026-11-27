@@ -24,7 +24,15 @@ export const geminiAnalysisSchema = z.object({
     originalWording: text,
     sourceQuote: text,
     status: z.enum(["stated", "ambiguous"]),
+    precision: z.enum(["exact", "approximate"]),
   })).max(30),
+  benefits: z.array(quotedFinding).max(30),
+  contacts: z.array(z.object({
+    type: z.enum(["registration_url", "website", "email", "phone", "other"]),
+    label: text,
+    value: text,
+    sourceQuote: text,
+  })).max(20),
   eligibility: z.array(quotedFinding).max(40),
   requirements: z.array(quotedFinding).max(40),
   costsAndFees: z.array(quotedFinding).max(30),
@@ -32,6 +40,12 @@ export const geminiAnalysisSchema = z.object({
   warnings: z.array(quotedFinding).max(40),
   unknowns: z.array(z.object({ label: text, detail: text })).max(40),
   nextSteps: z.array(z.object({ detail: text, sourceQuote: text })).max(30),
+  translation: z.object({
+    sourceLanguage: text,
+    needed: z.boolean(),
+    summary: text,
+    keyPoints: z.array(text).max(12),
+  }),
 });
 
 export type GeminiAnalysis = z.infer<typeof geminiAnalysisSchema>;
@@ -56,9 +70,17 @@ export const geminiAnalysisJsonSchema = {
         type: "object", properties: {
           label: { type: "string" }, detail: { type: "string" }, originalWording: { type: "string" },
           sourceQuote: { type: "string" }, status: { type: "string", enum: ["stated", "ambiguous"] },
-        }, required: ["label", "detail", "originalWording", "sourceQuote", "status"],
+          precision: { type: "string", enum: ["exact", "approximate"] },
+        }, required: ["label", "detail", "originalWording", "sourceQuote", "status", "precision"],
       },
     },
+    benefits: { type: "array", maxItems: 30, items: { "$ref": "#/$defs/quotedFinding" } },
+    contacts: { type: "array", maxItems: 20, items: {
+      type: "object", properties: {
+        type: { type: "string", enum: ["registration_url", "website", "email", "phone", "other"] },
+        label: { type: "string" }, value: { type: "string" }, sourceQuote: { type: "string" },
+      }, required: ["type", "label", "value", "sourceQuote"],
+    } },
     eligibility: { type: "array", maxItems: 40, items: { "$ref": "#/$defs/quotedFinding" } },
     requirements: { type: "array", maxItems: 40, items: { "$ref": "#/$defs/quotedFinding" } },
     costsAndFees: { type: "array", maxItems: 30, items: { "$ref": "#/$defs/quotedFinding" } },
@@ -70,8 +92,14 @@ export const geminiAnalysisJsonSchema = {
     nextSteps: { type: "array", maxItems: 30, items: {
       type: "object", properties: { detail: { type: "string" }, sourceQuote: { type: "string" } }, required: ["detail", "sourceQuote"],
     } },
+    translation: {
+      type: "object", properties: {
+        sourceLanguage: { type: "string" }, needed: { type: "boolean" }, summary: { type: "string" },
+        keyPoints: { type: "array", maxItems: 12, items: { type: "string" } },
+      }, required: ["sourceLanguage", "needed", "summary", "keyPoints"],
+    },
   },
-  required: ["overview", "announcementType", "keyFacts", "importantDates", "eligibility", "requirements", "costsAndFees", "actionItems", "warnings", "unknowns", "nextSteps"],
+  required: ["overview", "announcementType", "keyFacts", "importantDates", "eligibility", "requirements", "costsAndFees", "actionItems", "warnings", "unknowns", "nextSteps", "benefits", "contacts", "translation"],
   $defs: {
     quotedFinding: {
       type: "object",

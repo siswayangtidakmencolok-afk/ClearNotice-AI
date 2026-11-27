@@ -107,12 +107,16 @@ export function AnalysisBriefPage() {
           </div>
 
           <div className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
-            <span className="px-2 py-1 bg-slate-100 rounded text-slate-700">
-              SHA-256: 8f4e2...90a1
-            </span>
-            <span className="hidden sm:inline px-2 py-1 bg-slate-100 rounded text-slate-700">
-              Ingested: 15-Apr-2026 09:30 WIB
-            </span>
+            {isDemo && (
+              <>
+                <span className="px-2 py-1 bg-slate-100 rounded text-slate-700">
+                  SHA-256: 8f4e2...90a1
+                </span>
+                <span className="hidden sm:inline px-2 py-1 bg-slate-100 rounded text-slate-700">
+                  Ingested: 15-Apr-2026 09:30 WIB
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -197,7 +201,7 @@ export function AnalysisBriefPage() {
                   Announcement Type
                 </span>
                 <span className="font-semibold text-slate-900 text-sm">
-                  {analysis.announcementType?.detail || "Statutory Circular / Public Competitive Grant"}
+                  {analysis.announcementType?.detail || (isDemo ? "Statutory Circular / Public Competitive Grant" : "Not stated in the source.")}
                 </span>
               </div>
               <div>
@@ -205,28 +209,32 @@ export function AnalysisBriefPage() {
                   Issuing Authority
                 </span>
                 <span className="font-medium text-slate-800">
-                  {analysis.overview?.organizer?.detail || "Directorate General of Higher Education (MoECRT Indonesia)"}
+                  {analysis.overview?.organizer?.detail || (isDemo ? "Directorate General of Higher Education (MoECRT Indonesia)" : "Not stated in the source.")}
                 </span>
               </div>
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                  Canonical Reference
-                </span>
-                <div className="flex items-center gap-1.5 text-blue-600">
-                  <a href="https://moecrt.go.id/nsig-2026" target="_blank" rel="noreferrer" className="underline truncate max-w-[200px]">
-                    https://moecrt.go.id/nsig-2026
-                  </a>
-                  <ExternalLink size={12} />
-                </div>
-              </div>
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                  Ingestion Timeline
-                </span>
-                <span className="text-slate-700">
-                  Published: <strong>April 15, 2026</strong> • Ingested: 15-Apr-2026
-                </span>
-              </div>
+              {isDemo && (
+                <>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
+                      Canonical Reference
+                    </span>
+                    <div className="flex items-center gap-1.5 text-blue-600">
+                      <a href="https://moecrt.go.id/nsig-2026" target="_blank" rel="noreferrer" className="underline truncate max-w-[200px]">
+                        https://moecrt.go.id/nsig-2026
+                      </a>
+                      <ExternalLink size={12} />
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
+                      Ingestion Timeline
+                    </span>
+                    <span className="text-slate-700">
+                      Published: <strong>April 15, 2026</strong> • Ingested: 15-Apr-2026
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           </section>
 

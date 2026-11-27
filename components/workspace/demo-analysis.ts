@@ -1,4 +1,8 @@
 import type { EvidenceAnchor, EvidenceStatus, Finding, PrototypeAnalysis } from "./types";
+import { getSourceSentences, splitSentences, type SourceSentence } from "../../lib/sentence-segmenter";
+
+// The segmenter lives in lib/ so server-side evidence mapping and the demo share one implementation.
+export { getSourceSentences, splitSentences, type SourceSentence };
 
 export const canonicalNsigAnnouncement = `The Ministry of Education, Culture, Research, and Technology (MoECRT), through the Directorate General of Higher Education, hereby announces the official commencement of the National Student Innovation Grant (NSIG) Fiscal Year 2026. This flagship competitive initiative is instituted to accelerate institutional scientific research, cross-disciplinary technological entrepreneurship, and commercial prototypes developed by collegiate scholars.
 
@@ -257,46 +261,8 @@ export const canonicalNsigAnalysis: PrototypeAnalysis = {
   ],
 };
 
-type SourceSentence = {
-  paragraph: number;
-  quote: string;
-};
-
 const datePattern =
   /\b(?:\d{1,2}\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4})\b/i;
-
-function splitSentences(paragraph: string): string[] {
-  const sentences: string[] = [];
-  let start = 0;
-
-  for (let index = 0; index < paragraph.length; index += 1) {
-    const punctuation = paragraph[index];
-    const isDecimalPoint =
-      punctuation === "." && /\d/.test(paragraph[index - 1] ?? "") && /\d/.test(paragraph[index + 1] ?? "");
-    if (!/[.!?]/.test(punctuation) || isDecimalPoint) continue;
-
-    let end = index + 1;
-    while (/[.!?]/.test(paragraph[end] ?? "")) end += 1;
-    const sentence = paragraph.slice(start, end).trim();
-    if (sentence) sentences.push(sentence);
-    start = end;
-    index = end - 1;
-  }
-
-  const remainder = paragraph.slice(start).trim();
-  if (remainder) sentences.push(remainder);
-  return sentences;
-}
-
-export function getSourceSentences(text: string): SourceSentence[] {
-  return text
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean)
-    .flatMap((paragraphText, index) =>
-      splitSentences(paragraphText).map((quote) => ({ paragraph: index + 1, quote })),
-    );
-}
 
 function isAmbiguous(quote: string): boolean {
   return /\b(?:expected|approximately|around|may|might|could|estimated|to be confirmed|tbc)\b/i.test(

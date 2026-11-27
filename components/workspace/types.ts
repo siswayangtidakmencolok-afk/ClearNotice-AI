@@ -15,6 +15,24 @@ export type Finding = {
   status: EvidenceStatus;
   evidenceId?: string;
   kind?: "source-stated" | "interpretation" | "missing";
+  /** Dates only: whether the source states a specific calendar day or an approximate time. */
+  precision?: "exact" | "approximate";
+};
+
+export type ContactFinding = {
+  id: string;
+  type: "registration_url" | "website" | "email" | "phone" | "other";
+  label: string;
+  /** Copied verbatim from the source; contacts not found in the source text are dropped. */
+  value: string;
+  evidenceId?: string;
+};
+
+export type AnalysisTranslation = {
+  sourceLanguage: string;
+  needed: boolean;
+  summary: string;
+  keyPoints: string[];
 };
 
 export type PrototypeAnalysis = {
@@ -42,4 +60,7 @@ export type PrototypeAnalysis = {
   warnings: Finding[];
   unknowns: Finding[];
   evidence: EvidenceAnchor[];
+  benefits?: Finding[];
+  contacts?: ContactFinding[];
+  translation?: AnalysisTranslation;
 };

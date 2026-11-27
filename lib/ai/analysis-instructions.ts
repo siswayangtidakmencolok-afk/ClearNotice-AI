@@ -1,0 +1,10 @@
+// Rules for the extended analysis fields, shared by every provider so Gemini and OpenRouter
+// produce the same structure. Each rule forbids inventing data that the notice does not state.
+export const EXTENDED_FIELD_RULES = [
+  "overview.subject: the official name of the program or announcement exactly as written in the notice.",
+  "importantDates: include only points in time (dates, months, seasons, times). Put durations and frequencies such as 'eight weeks' or 'twice a week' in keyFacts instead.",
+  "importantDates.precision: use 'exact' only when a specific calendar day is written (for example 'February 28, 2027'). Use 'approximate' for wording such as around, about, early, mid, late, sometime, expected, soon, a month without a day, or a season, and set status to 'ambiguous' for those dates.",
+  "benefits: list what participants receive (funding, stipend, prize, facilities, certificate, mentoring) only when the notice states it, each with an exact sourceQuote.",
+  "contacts: list every registration link, website, email address, and phone number that is written in the notice. Copy value character for character from the notice. Never construct, guess, or complete a URL, address, or number. Use type 'registration_url' only for a link the notice says is used to apply or register. If none are written, return an empty list.",
+  "translation: set sourceLanguage to the language of the notice. If the notice is not written in Indonesian, set needed to true and write summary and keyPoints in Bahasa Indonesia, translating only information stated in the notice. Keep names, amounts, links, email addresses, and phone numbers unchanged. Write dates in Indonesian with the same day, month, and year (for example 'February 28, 2027' becomes '28 Februari 2027'), and translate approximate wording faithfully (for example 'late March' becomes 'akhir Maret'). If the notice is already in Indonesian, set needed to false and return an empty summary and an empty keyPoints list.",
+].join(" ");
